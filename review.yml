@@ -1,0 +1,307 @@
+aid: ofcom
+name: Ofcom
+review:
+  question: Does Ofcom, the UK communications regulator, publish a real, self-serve,
+    documented public API surface — and what is its CAMARA / Open Gateway posture?
+  answer: true
+  date: '2026-07-25'
+  reviewer: API Evangelist
+  homeMarket: United Kingdom
+  tier: regulator
+  openapiHarvested: true
+  specsCount: 2
+findings:
+  summary: |
+    Ofcom is the exception among regulators reviewed in this telecom study: it runs
+    a real developer portal, not a documents page. https://api.ofcom.org.uk/ returns
+    HTTP 200 and is an Ofcom-branded Microsoft Azure API Management developer portal
+    with working /apis, /products, /signup, and /signin routes, an interactive API
+    console, and published per-product rate limits. Sign-up is open and self-serve;
+    OpenAPI documents and product terms are readable anonymously. The only gate is
+    that every product carries approvalRequired=true, so an Ofcom human approves the
+    subscription before a key is issued. That is a real portal with an approval step,
+    not a partner login wall and not a marketing page.
+
+    The surface is genuinely narrow. Ofcom publishes exactly two APIs, both derived
+    from the same Connected Nations coverage dataset: the Connected Nations Broadband
+    API and the Connected Nations Mobile API. Each exposes one operation —
+    GET /coverage/{PostCode} — over a live Azure APIM gateway at
+    https://api-proxy.ofcom.org.uk/, which answers HTTP 401 with
+    "Access denied due to missing subscription key" when called anonymously,
+    confirming the gateway is live and the base URLs in the specs are real.
+
+    Everything else Ofcom produces — spectrum licence registers, the national
+    numbering plan, market research, Connected Nations reports themselves — is
+    published as documents and spreadsheet downloads, not as APIs. The evidence for
+    that is indirect but consistent: independent developers have built third-party
+    APIs on top of Ofcom's published files (for example lewiseason/ofcom-rangeholder-api
+    and TelcoTools/api-python-cp-lookup, both wrapping Ofcom numbering data), which is
+    what a documents-first publisher produces downstream. Certificate-transparency
+    enumeration of *.ofcom.org.uk turned up no other API hosts; the only two are
+    api.ofcom.org.uk (portal) and api-proxy.ofcom.org.uk (gateway). The spectrum
+    coordination portal at coordination-portal.ofcom.org.uk redirects to a Microsoft
+    Entra ID sign-in and is a licensee-only application, not an API.
+
+    Note that www.ofcom.org.uk sits behind a Cloudflare bot challenge and returned
+    HTTP 403 to every automated request during this review, so no claim in this file
+    rests on a page from the main Ofcom website. Every finding below was confirmed
+    against api.ofcom.org.uk, api-proxy.ofcom.org.uk, checker.ofcom.org.uk, crt.sh,
+    or the CAMARA project's own GitHub repositories.
+  developerPortal:
+    url: https://api.ofcom.org.uk/
+    httpStatus: 200
+    platform: Microsoft Azure API Management developer portal (Ofcom-branded)
+    real: true
+    gated: false
+    verdict: |
+      A real self-serve developer portal. Open sign-up at /signup, API listing at
+      /apis, product/plan listing at /products, interactive console, and OpenAPI
+      export available without authentication. Key issuance is approval-gated
+      (approvalRequired=true on all four products) but discovery, documentation,
+      and specification download are not.
+    routesConfirmed:
+      - url: https://api.ofcom.org.uk/
+        status: 200
+      - url: https://api.ofcom.org.uk/apis
+        status: 200
+      - url: https://api.ofcom.org.uk/products
+        status: 200
+      - url: https://api.ofcom.org.uk/api-details
+        status: 200
+      - url: https://api.ofcom.org.uk/signup
+        status: 200
+      - url: https://api.ofcom.org.uk/signin
+        status: 200
+  probesNegative:
+    - url: https://developer.ofcom.org.uk/
+      status: 000
+      note: DNS does not resolve.
+    - url: https://developers.ofcom.org.uk/
+      status: 000
+      note: DNS does not resolve.
+    - url: https://docs.ofcom.org.uk/
+      status: 000
+      note: DNS does not resolve.
+    - url: https://data.ofcom.org.uk/
+      status: 000
+      note: DNS does not resolve.
+    - url: https://opendata.ofcom.org.uk/
+      status: 000
+      note: DNS does not resolve.
+    - url: https://spectruminfo.ofcom.org.uk/
+      status: 000
+      note: DNS does not resolve.
+    - url: https://www.ofcom.org.uk/
+      status: 403
+      note: Cloudflare bot challenge ("Just a moment...") on every path, including
+        /api, /developer, /developers and /sitemap.xml. Not evidence of absence, but
+        nothing on the main site could be confirmed.
+    - url: https://api.ofcom.org.uk/openapi.json
+      status: 404
+    - url: https://api.ofcom.org.uk/swagger.json
+      status: 404
+    - url: https://api.ofcom.org.uk/api-docs
+      status: 404
+    - url: https://api-proxy.ofcom.org.uk/openapi.json
+      status: 404
+    - url: https://coordination-portal.ofcom.org.uk/
+      status: 200
+      note: Redirects to login.microsoftonline.com — Entra ID login wall for spectrum
+        coordination licensees. Not a public API.
+  openapi:
+    downloadable: true
+    count: 2
+    method: |
+      The Azure APIM developer-portal management proxy at
+      https://api.ofcom.org.uk/mapi/apis?api-version=2021-08-01 returned HTTP 200 and
+      listed both APIs anonymously. Each spec was then exported anonymously via
+      /mapi/apis/{id}?api-version=2021-08-01&export=true&format=openapi-link, which
+      returns a time-limited Azure blob link to the generated OpenAPI YAML. Both
+      documents were downloaded verbatim and parse as OpenAPI 3.0.1.
+    specs:
+      - file: openapi/ofcom-connected-nations-broadband-api-openapi.yml
+        title: Ofcom Connected Nations Broadband API
+        openapiVersion: 3.0.1
+        infoVersion: '1.0'
+        sourceURL: https://api.ofcom.org.uk/mapi/apis/ofcom-connected-nations-broadband-api?api-version=2021-08-01&export=true&format=openapi-link
+        httpStatus: 200
+        fetched: '2026-07-25'
+        bytes: 4737
+        serverURL: https://api-proxy.ofcom.org.uk/broadband
+        operations:
+          - GET /coverage/{PostCode}
+      - file: openapi/ofcom-connected-nations-mobile-api-openapi.yml
+        title: Ofcom Connected Nations Mobile API
+        openapiVersion: 3.0.1
+        infoVersion: '1.0'
+        sourceURL: https://api.ofcom.org.uk/mapi/apis/ofcom-connected-nations-api?api-version=2021-08-01&export=true&format=openapi-link
+        httpStatus: 200
+        fetched: '2026-07-25'
+        bytes: 9049
+        serverURL: https://api-proxy.ofcom.org.uk/mobile
+        operations:
+          - GET /coverage/{PostCode}
+  camara:
+    posture: |
+      Standards-body participant only, with nothing callable. Ofcom appears exactly
+      once in the CAMARA project's own participant register —
+      camaraproject/Governance/PARTICIPANTS.MD lists "Ofcom | George Jibin" — which
+      confirms a named Ofcom individual is registered as a CAMARA participant. That is
+      participation in the standards process, not an implementation. Ofcom exposes no
+      CAMARA network API of any kind; it could not, since it operates no network. A
+      seat in the register is not an implementation, and this profile says so plainly.
+    apisExposed: []
+    evidence:
+      - url: https://github.com/camaraproject/Governance/blob/main/PARTICIPANTS.MD
+        note: Line 805 — "| Ofcom | George Jibin ||". Only occurrence of Ofcom across
+          the camaraproject GitHub organization; the one other code-search hit
+          (QualityOnDemand_PI2 SessionController.kt) is a false positive on the
+          substring in "nbOfCompliantRanges".
+    openGatewayMember: false
+    openGatewayNote: |
+      GSMA Open Gateway is an operator commitment programme; its signatories are
+      mobile network operators. Ofcom is the UK regulator that supervises those
+      operators and is not on the operator list. No Open Gateway page, subdomain, or
+      reference was found on any Ofcom host (opengateway.ofcom.org.uk and
+      /opengateway do not exist).
+    aduna: false
+    adunaNote: Aduna is the Ericsson/carrier commercial aggregation JV for network
+      APIs. Ofcom has no relationship to it — a regulator has no network capability
+      to aggregate.
+  tmForum:
+    conformanceFound: false
+    note: No TM Forum Open API conformance certification was found for Ofcom. TM Forum
+      certification is held by operators and BSS/OSS vendors; a regulator has no
+      product catalog or ordering surface to certify.
+  threeGPP:
+    nef: false
+    scef: false
+    networkSlicing: false
+    edgeMEC: false
+    note: Ofcom operates no network and therefore exposes no NEF, SCEF, slicing, or
+      MEC surface. It regulates the spectrum those networks run on.
+  auth:
+    scheme: API key (Azure API Management subscription key)
+    details: |
+      Both OpenAPI documents declare two securitySchemes and require one of them
+      globally: apiKeyHeader (Ocp-Apim-Subscription-Key, in header) and apiKeyQuery
+      (subscription-key, in query). No OAuth2, no OpenID Connect, no mTLS.
+    ciba: false
+    cibaNote: |
+      CIBA (Client-Initiated Backchannel Authentication) does not appear anywhere in
+      Ofcom's surface. CIBA is the CAMARA/GSMA pattern for network-based
+      authorization of a subscriber's own line; Ofcom's APIs return aggregate
+      coverage data keyed on a postcode, so there is no subscriber to authorize.
+    discoveryDocuments:
+      - url: https://api.ofcom.org.uk/.well-known/openid-configuration
+        status: 404
+      - url: https://api.ofcom.org.uk/.well-known/oauth-authorization-server
+        status: 404
+      - url: https://api-proxy.ofcom.org.uk/.well-known/openid-configuration
+        status: 404
+  rateLimits:
+    published: true
+    source: https://api.ofcom.org.uk/products
+    note: Rate limits are published in the product descriptions themselves, which is
+      unusually transparent for a public-sector API.
+    products:
+      - name: Broadband Coverage (Basic)
+        limits: 100 calls/minute, 50,000 requests/month
+        approvalRequired: true
+      - name: Broadband Coverage (Premium)
+        limits: 500 calls/minute, 150,000 requests/month
+        approvalRequired: true
+      - name: Mobile Coverage (Basic)
+        limits: 100 calls/minute, 50,000 requests/month
+        approvalRequired: true
+      - name: Mobile Coverage (Premium)
+        limits: 500 calls/minute, 150,000 requests/month
+        approvalRequired: true
+  webhooks:
+    present: false
+    asyncapi: false
+    note: No webhooks, no event catalog, no AsyncAPI. Both APIs are synchronous
+      request/response lookups against a static quarterly dataset.
+  graphql:
+    present: false
+  grpc:
+    present: false
+  postman:
+    publicWorkspace: false
+    note: No first-party Ofcom Postman workspace or collection was found.
+  sdks:
+    firstParty: []
+    note: |
+      Ofcom publishes no first-party SDK on npm, PyPI, Maven, or NuGet, and operates
+      no GitHub organization for these APIs. Community clients exist instead —
+      stevegoossens/ofcom (a Node client for api.ofcom.org.uk) and francisbarton/tapioca
+      (an R wrapper for the Ofcom mobile API) — which is the usual signature of a
+      publisher that ships a specification and stops there.
+  transports:
+    - protocol: REST
+      scheme: https
+      baseURL: https://api-proxy.ofcom.org.uk/broadband
+      documented: true
+    - protocol: REST
+      scheme: https
+      baseURL: https://api-proxy.ofcom.org.uk/mobile
+      documented: true
+    - protocol: WebSocket
+      scheme: wss
+      documented: false
+      note: No WebSocket surface is documented.
+    - protocol: GraphQL
+      documented: false
+    - protocol: gRPC
+      documented: false
+  endpointsConfirmed:
+    - GET https://api-proxy.ofcom.org.uk/broadband/coverage/{PostCode}
+    - GET https://api-proxy.ofcom.org.uk/mobile/coverage/{PostCode}
+  liveProbes:
+    - url: https://api-proxy.ofcom.org.uk/broadband/coverage/SW1A1AA
+      status: 401
+      body: 'Access denied due to missing subscription key.'
+    - url: https://api-proxy.ofcom.org.uk/mobile/coverage/SW1A1AA
+      status: 401
+      body: 'Access denied due to missing subscription key.'
+sources:
+  - url: https://api.ofcom.org.uk/
+    type: DeveloperPortal
+    status: 200
+    note: Ofcom-branded Azure API Management developer portal. Confirmed self-serve
+      sign-up, APIs list, products list.
+  - url: https://api.ofcom.org.uk/mapi/apis?api-version=2021-08-01
+    type: APIReference
+    status: 200
+    note: Anonymous listing of both published APIs with paths, protocols, and
+      subscription key parameter names.
+  - url: https://api.ofcom.org.uk/mapi/products?api-version=2021-08-01
+    type: Plans
+    status: 200
+    note: Four published products with rate limits and approvalRequired=true.
+  - url: https://api-proxy.ofcom.org.uk/
+    type: BaseURL
+    status: 404
+    note: Live Azure APIM gateway; 401 with subscription-key message on real paths.
+  - url: https://github.com/camaraproject/Governance/blob/main/PARTICIPANTS.MD
+    type: Standards
+    note: Sole CAMARA evidence for Ofcom — one named participant, no implementation.
+  - url: https://checker.ofcom.org.uk/
+    type: Application
+    status: 200
+    note: Ofcom's public Mobile and Broadband Checker, the consumer front end over
+      the same Connected Nations data. Server-rendered; exposes no additional API.
+  - url: https://crt.sh/?q=%25.ofcom.org.uk
+    type: Reconnaissance
+    note: Certificate-transparency enumeration of ofcom.org.uk subdomains. Only
+      api.ofcom.org.uk and api-proxy.ofcom.org.uk are API hosts.
+actions:
+  openapiPaths:
+    - openapi/ofcom-connected-nations-broadband-api-openapi.yml
+    - openapi/ofcom-connected-nations-mobile-api-openapi.yml
+  apisYmlUpdated: true
+  reason: |
+    Bootstrap of the Ofcom provider profile for the telecom sector study. Two real
+    OpenAPI 3.0.1 documents were harvested verbatim from Ofcom's own Azure APIM
+    export endpoint and both APIs were listed in apis.yml with confirmed base URLs.
+    CAMARA posture recorded as participant-register-only with no exposed CAMARA APIs.

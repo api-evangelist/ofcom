@@ -1,0 +1,104 @@
+aid: ofcom
+url: https://raw.githubusercontent.com/api-evangelist/ofcom/refs/heads/main/apis.yml
+name: Ofcom
+kind: company
+description: Ofcom is the Office of Communications, the United Kingdom's independent
+  regulator and competition authority for telecommunications, spectrum, broadcasting,
+  post, and online safety. It licenses UK spectrum, administers the national numbering
+  plan, publishes the Connected Nations reports on fixed and mobile coverage, and
+  supervises the operators (EE, VMO2, Vodafone, Three) rather than selling connectivity
+  itself. Its position in the telecom value chain is therefore upstream of the market
+  it measures — it is a data producer and rule-setter, not a network or a CPaaS
+  aggregator. Its API posture is unusually good for a regulator and unusually narrow
+  in scope. Ofcom runs a real, Ofcom-branded Azure API Management developer portal
+  at api.ofcom.org.uk with open sign-up, an interactive console, published rate-limit
+  tiers, and anonymously downloadable OpenAPI 3.0.1 documents for two APIs — the
+  Connected Nations Broadband API and the Connected Nations Mobile API — both served
+  from the live gateway at api-proxy.ofcom.org.uk and authenticated with an Azure
+  APIM subscription key. Everything else Ofcom publishes (spectrum licence registers,
+  numbering data, market research) is documents and datasets, not APIs, and the
+  community has repeatedly built third-party APIs on top of those files. Ofcom
+  appears once in the CAMARA project participant register but exposes no CAMARA
+  network APIs and is not a GSMA Open Gateway participant — Open Gateway is an
+  operator commitment programme and Ofcom is the regulator, not an operator.
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+tags:
+- Telecommunications
+- United Kingdom
+- Regulator
+- Broadband
+- Mobile Network Coverage
+- Spectrum
+- Open Data
+- Connected Nations
+created: '2026-07-25'
+modified: '2026-07-25'
+specificationVersion: '0.19'
+apis:
+- aid: ofcom:ofcom-connected-nations-broadband-api
+  name: Ofcom Connected Nations Broadband API
+  description: Returns predicted fixed broadband availability for a UK postcode from
+    Ofcom's Connected Nations dataset — per-premises maximum predicted download and
+    upload speeds broken out by Basic, Superfast, and Ultrafast bands, plus percentage
+    availability of each speed category. A single GET operation, GET /coverage/{PostCode},
+    authenticated with an Azure API Management subscription key sent as the
+    Ocp-Apim-Subscription-Key header or a subscription-key query parameter.
+  humanURL: https://api.ofcom.org.uk/apis
+  baseURL: https://api-proxy.ofcom.org.uk/broadband
+  tags:
+  - Broadband
+  - Coverage
+  - United Kingdom
+  - Open Data
+  - Connected Nations
+  properties:
+  - type: OpenAPI
+    url: openapi/ofcom-connected-nations-broadband-api-openapi.yml
+  - type: Documentation
+    url: https://api.ofcom.org.uk/
+  - type: APIReference
+    url: https://api.ofcom.org.uk/api-details
+- aid: ofcom:ofcom-connected-nations-mobile-api
+  name: Ofcom Connected Nations Mobile API
+  description: Returns predicted mobile coverage for a UK postcode from Ofcom's
+    Connected Nations dataset, scored 0 (none), 3 (limited), or 4 (likely) for each
+    of the four UK mobile network operators — EE, H3 (Three), TF (Virgin Media O2),
+    and VO (Vodafone) — split by voice and data and by indoor and outdoor, with
+    separate no-4G variants. A single GET operation, GET /coverage/{PostCode},
+    authenticated with an Azure API Management subscription key sent as the
+    Ocp-Apim-Subscription-Key header or a subscription-key query parameter.
+  humanURL: https://api.ofcom.org.uk/apis
+  baseURL: https://api-proxy.ofcom.org.uk/mobile
+  tags:
+  - Mobile Network Coverage
+  - Coverage
+  - United Kingdom
+  - Open Data
+  - Connected Nations
+  properties:
+  - type: OpenAPI
+    url: openapi/ofcom-connected-nations-mobile-api-openapi.yml
+  - type: Documentation
+    url: https://api.ofcom.org.uk/
+  - type: APIReference
+    url: https://api.ofcom.org.uk/api-details
+common:
+- type: Website
+  url: https://www.ofcom.org.uk/
+- type: DeveloperPortal
+  url: https://api.ofcom.org.uk/
+- type: Documentation
+  url: https://api.ofcom.org.uk/apis
+- type: SignUp
+  url: https://api.ofcom.org.uk/signup
+- type: SignIn
+  url: https://api.ofcom.org.uk/signin
+- type: Plans
+  url: https://api.ofcom.org.uk/products
+- type: MobileAndBroadbandChecker
+  url: https://checker.ofcom.org.uk/
+- type: LinkedIn
+  url: https://www.linkedin.com/company/ofcom
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com
