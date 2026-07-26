@@ -1,0 +1,84 @@
+specification: API Commons Rate Limits
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
+provider: Ofcom
+providerId: ofcom
+generated: '2026-07-25'
+method: searched
+created: '2026-07-25'
+modified: '2026-07-25'
+tags:
+  - Rate Limiting
+  - Telecommunications
+  - United Kingdom
+  - Open Data
+description: >-
+  Ofcom publishes its rate limits directly in the Azure API Management product
+  descriptions, which are readable anonymously. Each of the two APIs has a Basic and
+  a Premium product; limits are enforced per subscription key, and a key is issued
+  per product only after Ofcom approval. Ofcom documents no rate-limit response
+  headers and no throttled-response contract.
+sources:
+  - https://api.ofcom.org.uk/products
+  - https://api.ofcom.org.uk/mapi/products?api-version=2021-08-01
+headers: {}
+responseCodes:
+  throttled: null
+limits:
+  - name: Broadband Coverage (Basic) — call rate
+    product: broadband
+    scope: subscription
+    metric: requests_per_minute
+    limit: 100
+    timeFrame: minute
+  - name: Broadband Coverage (Basic) — monthly quota
+    product: broadband
+    scope: subscription
+    metric: requests_per_month
+    limit: 50000
+    timeFrame: month
+  - name: Broadband Coverage (Premium) — call rate
+    product: broadband-premium
+    scope: subscription
+    metric: requests_per_minute
+    limit: 500
+    timeFrame: minute
+  - name: Broadband Coverage (Premium) — monthly quota
+    product: broadband-premium
+    scope: subscription
+    metric: requests_per_month
+    limit: 150000
+    timeFrame: month
+  - name: Mobile Coverage (Basic) — call rate
+    product: mobile
+    scope: subscription
+    metric: requests_per_minute
+    limit: 100
+    timeFrame: minute
+  - name: Mobile Coverage (Basic) — monthly quota
+    product: mobile
+    scope: subscription
+    metric: requests_per_month
+    limit: 50000
+    timeFrame: month
+  - name: Mobile Coverage (Premium) — call rate
+    product: mobile-premium
+    scope: subscription
+    metric: requests_per_minute
+    limit: 500
+    timeFrame: minute
+  - name: Mobile Coverage (Premium) — monthly quota
+    product: mobile-premium
+    scope: subscription
+    metric: requests_per_month
+    limit: 150000
+    timeFrame: month
+notes:
+  - >-
+    Verbatim product description, Broadband Coverage (Basic): "Subscribers can
+    retrieve broadband coverage data against postcodes up to run 100 calls/minute
+    for 50,000 requests per month."
+  - >-
+    The Mobile Coverage (Premium) product description says "broadband coverage
+    data" — an apparent copy/paste in Ofcom's own catalog. The numeric limits are
+    recorded as published.

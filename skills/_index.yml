@@ -1,0 +1,17 @@
+generated: '2026-07-25'
+method: generated
+source: openapi/, conventions/ofcom-conventions.yml, errors/ofcom-problem-types.yml
+description: >-
+  Packaged agent operating instructions for the two Ofcom Connected Nations APIs.
+  Both are grounded in the single real operationId published in each spec
+  (CoverageByPostCodeGet) — nothing is invented. Ofcom publishes no AGENTS.md or
+  skill files of its own.
+skills:
+  - file: ofcom-check-broadband-coverage.md
+    name: Check UK fixed broadband coverage for a postcode
+    api: openapi/ofcom-connected-nations-broadband-api-openapi.yml
+    operations: [CoverageByPostCodeGet]
+  - file: ofcom-check-mobile-coverage.md
+    name: Check UK mobile network coverage for a postcode
+    api: openapi/ofcom-connected-nations-mobile-api-openapi.yml
+    operations: [CoverageByPostCodeGet]

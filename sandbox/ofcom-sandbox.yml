@@ -1,0 +1,46 @@
+generated: '2026-07-25'
+method: searched
+source: https://api.ofcom.org.uk/api-details, review.yml
+description: |
+  Ofcom provides the Azure API Management interactive test console on its developer
+  portal — the "Try it" surface on the API details page, which builds and issues a
+  live request against the real gateway. That is the whole sandbox story. There is
+  no separate test environment, no test-vs-live key separation, no fixture or magic
+  test values, and no published sample postcode. The console calls production, so
+  every call consumes the caller's real monthly quota.
+console:
+  present: true
+  url: https://api.ofcom.org.uk/api-details
+  platform: Microsoft Azure API Management developer portal ("Try it")
+  requires_key: true
+  key_note: >-
+    The console needs an approved subscription key. Sign-up is self-serve but every
+    product is approvalRequired=true, so the console is not anonymously callable.
+test_environment:
+  present: false
+  base_url: null
+  note: >-
+    Both OpenAPI documents declare exactly one server —
+    https://api-proxy.ofcom.org.uk/broadband and .../mobile respectively. There is
+    no sandbox host, and no sandbox subdomain resolves.
+test_credentials:
+  present: false
+  key_prefixes: []
+  note: >-
+    Azure APIM subscription keys carry no test/live prefix distinction. There is one
+    key per product and it is a production key.
+magic_values:
+  present: false
+  note: >-
+    No test postcodes, no fixture premises, no simulated UPRNs are published. Real
+    UK postcodes against the live Connected Nations dataset are the only input.
+    Nothing is invented here.
+time_simulation:
+  present: false
+fixtures:
+  present: false
+triggers:
+  present: false
+anonymous_probe:
+  - {url: 'https://api-proxy.ofcom.org.uk/broadband/coverage/SW1A1AA', status: 401, body: 'Access denied due to missing subscription key.'}
+  - {url: 'https://api-proxy.ofcom.org.uk/mobile/coverage/SW1A1AA', status: 401, body: 'Access denied due to missing subscription key.'}

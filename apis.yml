@@ -33,6 +33,15 @@ tags:
 - Connected Nations
 created: '2026-07-25'
 modified: '2026-07-25'
+enrichment:
+  lastRun: '2026-07-25'
+  round: '2026-07-25'
+  notes: >-
+    Enrichment round. No MCPServer, StatusPage, Deprecation, Security, Compliance,
+    Idempotency, SDKs, Webhooks, AsyncAPI, Postman, CLI, Components, ChangeLog,
+    OAuthScopes or WellKnown pointer is wired because Ofcom genuinely publishes
+    none of those — see mcp/, lifecycle/, conventions/, well-known/, packages/ and
+    conformance/ for the recorded negative results and probe statuses.
 specificationVersion: '0.19'
 apis:
 - aid: ofcom:ofcom-connected-nations-broadband-api
@@ -54,9 +63,15 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/ofcom-connected-nations-broadband-api-openapi.yml
+  - type: Overlay
+    url: overlays/ofcom-connected-nations-broadband-api-overlay.yaml
+  - type: AgentSkill
+    url: skills/ofcom-check-broadband-coverage.md
   - type: Documentation
     url: https://api.ofcom.org.uk/
   - type: APIReference
+    url: https://api.ofcom.org.uk/api-details
+  - type: Console
     url: https://api.ofcom.org.uk/api-details
 - aid: ofcom:ofcom-connected-nations-mobile-api
   name: Ofcom Connected Nations Mobile API
@@ -78,11 +93,48 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/ofcom-connected-nations-mobile-api-openapi.yml
+  - type: Overlay
+    url: overlays/ofcom-connected-nations-mobile-api-overlay.yaml
+  - type: AgentSkill
+    url: skills/ofcom-check-mobile-coverage.md
   - type: Documentation
     url: https://api.ofcom.org.uk/
   - type: APIReference
     url: https://api.ofcom.org.uk/api-details
+  - type: Console
+    url: https://api.ofcom.org.uk/api-details
 common:
+- type: AgenticAccess
+  url: agentic-access/ofcom-agentic-access.yml
+- type: ToolCrosswalk
+  url: mcp/ofcom-tool-crosswalk.yml
+- type: Packages
+  url: packages/ofcom-packages.yml
+- type: LLMsTxt
+  url: llms/ofcom-llms.txt
+- type: Conformance
+  url: conformance/ofcom-conformance.yml
+- type: ErrorCatalog
+  url: errors/ofcom-problem-types.yml
+- type: Lifecycle
+  url: lifecycle/ofcom-lifecycle.yml
+- type: Conventions
+  url: conventions/ofcom-conventions.yml
+- type: DataModel
+  url: data-model/ofcom-data-model.yml
+- type: RateLimits
+  url: rate-limits/ofcom-rate-limits.yml
+- type: Sandbox
+  url: sandbox/ofcom-sandbox.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: Arazzo
+  name: Ofcom postcode connectivity profile
+  url: arazzo/ofcom-postcode-connectivity-profile.yml
+- type: DomainSecurity
+  url: security/ofcom-domain-security.yml
+- type: Authentication
+  url: authentication/ofcom-authentication.yml
 - type: Website
   url: https://www.ofcom.org.uk/
 - type: DeveloperPortal
@@ -93,8 +145,18 @@ common:
   url: https://api.ofcom.org.uk/signup
 - type: SignIn
   url: https://api.ofcom.org.uk/signin
+- type: APIReference
+  url: https://api.ofcom.org.uk/api-details
+- type: Console
+  url: https://api.ofcom.org.uk/api-details
 - type: Plans
   url: https://api.ofcom.org.uk/products
+- type: Plans
+  url: plans/ofcom-plans.yml
+- type: Support
+  url: mailto:cnapisupport@ofcom.org.uk
+- type: TermsOfService
+  url: https://www.ofcom.org.uk/siteassets/ofcom/phones-telecoms-and-internet/advice-for-consumers-/broadband-and-mobile-coverage-checker/ofcom-api-terms-of-use-2025.pdf?v=399736
 - type: MobileAndBroadbandChecker
   url: https://checker.ofcom.org.uk/
 - type: LinkedIn

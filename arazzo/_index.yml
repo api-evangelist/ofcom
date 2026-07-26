@@ -1,0 +1,11 @@
+generated: '2026-07-25'
+method: derived
+source: arazzo/*.yml
+workflows:
+  - file: ofcom-postcode-connectivity-profile.yml
+    workflowId: postcode-connectivity-profile
+    title: Ofcom postcode connectivity profile
+    summary: >-
+      Call both Connected Nations APIs for one UK postcode — fixed broadband
+      availability and four-operator mobile coverage — and join the premises-level
+      results on UPRN.

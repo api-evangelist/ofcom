@@ -1,0 +1,127 @@
+generated: '2026-07-25'
+method: derived
+source: openapi/ofcom-connected-nations-broadband-api-openapi.yml, openapi/ofcom-connected-nations-mobile-api-openapi.yml
+description: |
+  Entity-relationship graph derived from the components.schemas and $ref links in
+  Ofcom's two OpenAPI documents. The model is a two-level containment tree in both
+  APIs: a postcode envelope holds an Availability array of per-premises provision
+  records keyed on UPRN. There is no cross-entity reference and no identifier
+  namespace beyond the UK postcode and the UPRN — both externally governed
+  (Royal Mail PAF and Ordnance Survey AddressBase respectively), not minted by
+  Ofcom.
+identifiers:
+  - name: PostCode
+    type: string
+    authority: UK postcode (Royal Mail)
+    role: request key and response envelope key
+    note: >-
+      Supplied as the single required path parameter on both operations; echoed on
+      success and on the 404 not-found body.
+  - name: UPRN
+    type: integer
+    authority: Unique Property Reference Number (Ordnance Survey AddressBase)
+    role: primary key of a premises-level provision record
+    note: The only per-premises identifier; the same UPRN is comparable across both APIs.
+entities:
+  - name: FixedAvailability
+    api: ofcom:ofcom-connected-nations-broadband-api
+    kind: envelope
+    schema: openapi/ofcom-connected-nations-broadband-api-openapi.yml#/components/schemas/FixedAvailability
+    fields: [PostCode, Availability]
+    returned_by: CoverageByPostCodeGet
+  - name: BroadbandProvision
+    api: ofcom:ofcom-connected-nations-broadband-api
+    kind: record
+    schema: openapi/ofcom-connected-nations-broadband-api-openapi.yml#/components/schemas/BroadbandProvision
+    field_count: 11
+    fields: [UPRN, AddressShortDescription, PostCode, MaxBbPredictedDown, MaxBbPredictedUp, MaxSfbbPredictedDown, MaxSfbbPredictedUp, MaxUfbbPredictedDown, MaxUfbbPredictedUp, MaxPredictedDown, MaxPredictedUp]
+    domain: >-
+      Predicted download/upload speed per premises across Basic (Bb), Superfast
+      (Sfbb) and Ultrafast (Ufbb) bands, plus the overall maximum. All numeric
+      fields carry minimum -1, the sentinel for "no prediction available".
+  - name: MobileAvailability
+    api: ofcom:ofcom-connected-nations-mobile-api
+    kind: envelope
+    schema: openapi/ofcom-connected-nations-mobile-api-openapi.yml#/components/schemas/MobileAvailability
+    fields: [PostCode, Availability]
+  - name: MobileAvailabilityArray
+    api: ofcom:ofcom-connected-nations-mobile-api
+    kind: collection
+    schema: openapi/ofcom-connected-nations-mobile-api-openapi.yml#/components/schemas/MobileAvailabilityArray
+    items: MobileAvailability
+    returned_by: CoverageByPostCodeGet
+    note: >-
+      Structural divergence between the two APIs — mobile returns an ARRAY of
+      postcode envelopes, broadband returns a SINGLE envelope. A client that assumes
+      symmetry breaks.
+  - name: MobileProvision
+    api: ofcom:ofcom-connected-nations-mobile-api
+    kind: record
+    schema: openapi/ofcom-connected-nations-mobile-api-openapi.yml#/components/schemas/MobileProvision
+    field_count: 35
+    domain: >-
+      Per-premises coverage for four operators (EE, H3/Three, TF/Virgin Media O2,
+      VO/Vodafone) across the cross-product of voice|data x indoor|outdoor x
+      all-technologies|no-4G — 32 MobileCoverageValue fields plus UPRN,
+      AddressShortDescription and PostCode.
+  - name: MobileCoverageValue
+    api: ofcom:ofcom-connected-nations-mobile-api
+    kind: value-type
+    schema: openapi/ofcom-connected-nations-mobile-api-openapi.yml#/components/schemas/MobileCoverageValue
+    base_type: integer
+    enum_semantics:
+      0: None — you should not expect coverage
+      3: Limited — coverage may be limited
+      4: Likely — you are likely to have coverage
+    note: Ofcom's spec states that values 1 and 2 are no longer used. Treat as an enum, not a scale.
+  - name: FixedAvailabilityNotFound
+    kind: error
+    schema: openapi/ofcom-connected-nations-broadband-api-openapi.yml#/components/schemas/FixedAvailabilityNotFound
+    fields: [PostCode, ErrorMessage]
+  - name: MobileAvailabilityNotFound
+    kind: error
+    schema: openapi/ofcom-connected-nations-mobile-api-openapi.yml#/components/schemas/MobileAvailabilityNotFound
+    fields: [PostCode, ErrorMessage]
+  - name: GeneralError
+    kind: error
+    schema: both specs (#/components/schemas/GeneralError)
+    fields: [ErrorMessage]
+relationships:
+  - from: FixedAvailability
+    to: BroadbandProvision
+    type: has_many
+    via: Availability
+    binding: inline array
+  - from: MobileAvailabilityArray
+    to: MobileAvailability
+    type: has_many
+    via: items
+    binding: $ref
+  - from: MobileAvailability
+    to: MobileProvision
+    type: has_many
+    via: Availability
+    binding: inline array
+  - from: MobileProvision
+    to: MobileCoverageValue
+    type: has_many
+    via: 32 operator/voice-data/indoor-outdoor fields
+    binding: $ref
+  - from: BroadbandProvision
+    to: FixedAvailability
+    type: belongs_to
+    via: PostCode
+  - from: MobileProvision
+    to: MobileAvailability
+    type: belongs_to
+    via: PostCode
+cross_api:
+  - from: BroadbandProvision
+    to: MobileProvision
+    type: joinable
+    via: UPRN
+    note: >-
+      The two APIs are separate products with separate keys, but UPRN and PostCode
+      are shared, so a consumer can join fixed and mobile coverage for the same
+      premises client-side. Ofcom exposes no combined operation.
+render: null

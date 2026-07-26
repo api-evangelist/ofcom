@@ -1,0 +1,94 @@
+generated: '2026-07-25'
+method: searched
+source: https://api.ofcom.org.uk/, https://api.ofcom.org.uk/mapi/apis?api-version=2021-08-01, openapi/, review.yml
+description: |
+  Cross-cutting request/response semantics for the Ofcom Connected Nations APIs.
+  The surface is deliberately minimal: two read-only postcode lookups behind an
+  Azure API Management gateway. Most conventions an integrator would ask about
+  (idempotency, pagination, expansion, versioning, request tracing) genuinely do
+  not exist here — this file records that plainly rather than inventing a contract.
+authentication:
+  style: api-key
+  schemes:
+    - {name: apiKeyHeader, in: header, parameter: Ocp-Apim-Subscription-Key}
+    - {name: apiKeyQuery, in: query, parameter: subscription-key}
+  scope: per-product — a separate key for Broadband and Mobile
+  issuance: >-
+    Self-serve sign-up at https://api.ofcom.org.uk/signup, then Ofcom approval —
+    all four products carry approvalRequired=true.
+  detail: authentication/ofcom-authentication.yml
+idempotency:
+  supported: false
+  header: null
+  note: >-
+    The entire surface is GET-only, so there is nothing to make idempotent. No
+    Idempotency-Key header or parameter is defined or documented. No Idempotency
+    pointer is wired from this file.
+pagination:
+  supported: false
+  note: >-
+    GET /coverage/{PostCode} returns the full premises array for the requested
+    postcode in one response. No page, cursor, limit or offset parameter exists in
+    either spec. Response size scales with the number of premises in the postcode.
+filtering:
+  supported: false
+  note: The postcode path parameter is the only input. No query filters, no field selection.
+field_expansion:
+  supported: false
+sparse_fields:
+  supported: false
+metadata:
+  supported: false
+request_tracing:
+  request_id_header: null
+  note: >-
+    No request-id or correlation header is documented. Azure API Management can
+    emit a request identifier but Ofcom does not document one as part of the
+    contract.
+versioning:
+  in_path: false
+  in_header: false
+  current: '1.0'
+  detail: lifecycle/ofcom-lifecycle.yml
+  note: No version segment in the base path; no version or api-version header documented.
+content_negotiation:
+  request: none — no request body on any operation
+  response: application/json only
+error_envelope:
+  content_type: application/json
+  shape: '{ ErrorMessage: string }'
+  not_found_shape: '{ PostCode: string, ErrorMessage: string }'
+  problem_json: false
+  detail: errors/ofcom-problem-types.yml
+rate_limit_signaling:
+  limits_published: true
+  limits_source: https://api.ofcom.org.uk/products
+  response_headers_documented: false
+  throttle_status_documented: false
+  detail: rate-limits/ofcom-rate-limits.yml
+  note: >-
+    Ofcom publishes the numbers (calls/minute and requests/month per product) in the
+    product descriptions, which is unusually transparent for a public-sector API,
+    but documents no rate-limit response headers and no throttled-response contract.
+data_semantics:
+  - >-
+    Mobile coverage values are the enumerated set 0 (none), 3 (limited), 4 (likely).
+    Ofcom's own spec notes that return values 1 and 2 are no longer used — treat the
+    field as an enum, not a scale.
+  - >-
+    Broadband speed fields have a minimum of -1, which is the spec's sentinel for
+    "no prediction available"; a naive consumer that treats it as a speed will
+    report negative Mbps.
+  - >-
+    Every response is keyed on UPRN (Unique Property Reference Number) per premises
+    within the requested postcode.
+  - >-
+    Values are Ofcom's PREDICTED coverage from the Connected Nations dataset, not
+    measured throughput, and are refreshed on Ofcom's reporting cycle rather than
+    live.
+key_conventions_absent:
+  - webhooks / events / AsyncAPI
+  - GraphQL
+  - gRPC
+  - bulk or batch operations
+  - write operations of any kind

@@ -1,0 +1,83 @@
+generated: '2026-07-25'
+method: derived
+source: openapi/ofcom-connected-nations-broadband-api-openapi.yml, openapi/ofcom-connected-nations-mobile-api-openapi.yml, live gateway probe
+format: custom
+description: |
+  Ofcom does not use RFC 9457 problem+json. Both APIs return a bespoke JSON error
+  envelope on application/json. Two shapes exist: the 404 "not found" body, which
+  echoes the requested postcode alongside the message, and the generic error body,
+  which carries the message alone. Gateway-level errors (401) are produced by Azure
+  API Management before the API is reached and are not described in either OpenAPI
+  document — they are recorded here from a live anonymous probe.
+envelope:
+  content_type: application/json
+  fields:
+    - name: ErrorMessage
+      type: string
+      required: true
+      description: A human readable error message.
+    - name: PostCode
+      type: string
+      required: false
+      description: Echo of the requested postcode; present on the 404 not-found body only.
+  problem_json: false
+  error_code_field: null
+  note: There is no machine-readable error code — only free-text ErrorMessage.
+problems:
+  - status: 404
+    title: Post Code not found
+    schema: FixedAvailabilityNotFound
+    body_fields: [PostCode, ErrorMessage]
+    source_operation: openapi/ofcom-connected-nations-broadband-api-openapi.yml#CoverageByPostCodeGet
+    remediation: >-
+      Verify the postcode is a valid UK postcode present in the Connected Nations
+      dataset. Whitespace-free uppercase form (SW1A1AA) is what the path parameter
+      expects.
+  - status: 500
+    title: General error
+    schema: GeneralError
+    body_fields: [ErrorMessage]
+    source_operation: openapi/ofcom-connected-nations-broadband-api-openapi.yml#CoverageByPostCodeGet
+    remediation: Retry with backoff; if persistent, contact cnapisupport@ofcom.org.uk.
+  - status: 404
+    title: Post Code not found
+    schema: MobileAvailabilityNotFound
+    body_fields: [PostCode, ErrorMessage]
+    source_operation: openapi/ofcom-connected-nations-mobile-api-openapi.yml#CoverageByPostCodeGet
+    remediation: >-
+      Verify the postcode is a valid UK postcode present in the Connected Nations
+      mobile dataset.
+  - status: 500
+    title: General error
+    schema: GeneralError
+    body_fields: [ErrorMessage]
+    source_operation: openapi/ofcom-connected-nations-mobile-api-openapi.yml#CoverageByPostCodeGet
+    remediation: Retry with backoff; if persistent, contact cnapisupport@ofcom.org.uk.
+gateway_errors:
+  - status: 401
+    title: Access denied due to missing subscription key
+    body: 'Access denied due to missing subscription key.'
+    layer: Azure API Management gateway
+    in_openapi: false
+    evidence:
+      - {url: 'https://api-proxy.ofcom.org.uk/broadband/coverage/SW1A1AA', status: 401}
+      - {url: 'https://api-proxy.ofcom.org.uk/mobile/coverage/SW1A1AA', status: 401}
+    remediation: >-
+      Send an approved subscription key as the Ocp-Apim-Subscription-Key header or
+      the subscription-key query parameter. Keys are per product and are issued by
+      Ofcom after approval.
+  - status: 429
+    title: Rate limit exceeded
+    layer: Azure API Management gateway
+    in_openapi: false
+    documented: false
+    note: >-
+      Ofcom publishes per-product call-rate and monthly quota limits (see
+      rate-limits/ofcom-rate-limits.yml) but does not document the throttling
+      response, its headers, or the Retry-After behaviour. Azure APIM's default
+      throttle response is 429 with a Retry-After header; this is not an Ofcom
+      published claim and is recorded as undocumented.
+gaps:
+  - No 401/403/429 responses are described in either OpenAPI document.
+  - No machine-readable error codes — remediation must key on HTTP status and free text.
+  - No published error reference page.

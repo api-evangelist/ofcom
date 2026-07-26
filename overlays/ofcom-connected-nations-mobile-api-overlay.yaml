@@ -1,0 +1,78 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for Ofcom Connected Nations Mobile API
+  version: 1.0.0
+extends: openapi/ofcom-connected-nations-mobile-api-openapi.yml
+x-apievangelist:
+  generated: '2026-07-25'
+  method: generated
+  source: openapi/ofcom-connected-nations-mobile-api-openapi.yml, review.yml, live probes
+  note: >-
+    Additive only. Captures the gateway 401, the operator-code legend, the 0/3/4
+    enum semantics and the published rate limits that Ofcom's exported OpenAPI
+    omits. Never mutates the harvested original.
+actions:
+  - target: $.info
+    update:
+      x-apievangelist-provider: ofcom
+      x-apievangelist-artifacts: https://github.com/api-evangelist/ofcom
+      contact:
+        name: Ofcom Connected Nations API support
+        email: cnapisupport@ofcom.org.uk
+      x-terms-of-use: https://www.ofcom.org.uk/siteassets/ofcom/phones-telecoms-and-internet/advice-for-consumers-/broadband-and-mobile-coverage-checker/ofcom-api-terms-of-use-2025.pdf?v=399736
+  - target: $.info
+    update:
+      x-operator-codes:
+        EE: EE (BT Group)
+        H3: Three UK (Hutchison 3G)
+        TF: Virgin Media O2 (Telefonica UK)
+        VO: Vodafone UK
+      x-rate-limits:
+        source: https://api.ofcom.org.uk/products
+        products:
+          - {name: Mobile Coverage (Basic), calls_per_minute: 100, requests_per_month: 50000, approval_required: true}
+          - {name: Mobile Coverage (Premium), calls_per_minute: 500, requests_per_month: 150000, approval_required: true}
+  - target: $.paths['/coverage/{PostCode}'].get
+    update:
+      tags:
+        - Coverage
+      x-agentic-access:
+        action-class: connected
+        consequence: read
+        subject: optional
+        token:
+          max-ttl: 3600
+        audit: none
+  - target: $.paths['/coverage/{PostCode}'].get.responses
+    update:
+      '401':
+        description: >-
+          Access denied due to missing or invalid subscription key. Emitted by the
+          Azure API Management gateway before the API is reached; confirmed by
+          anonymous live probe of
+          https://api-proxy.ofcom.org.uk/mobile/coverage/SW1A1AA on 2026-07-25.
+        content:
+          text/plain:
+            schema:
+              type: string
+  - target: $.components.schemas.MobileCoverageValue
+    update:
+      enum:
+        - 0
+        - 3
+        - 4
+      x-enum-descriptions:
+        0: None — you should not expect coverage
+        3: Limited — coverage may be limited
+        4: Likely — you are likely to have coverage
+      x-notes: >-
+        Ofcom states that values 1 and 2 are no longer used. This is an enumeration
+        of confidence bands, not a linear scale — do not average it.
+  - target: $.components.schemas.MobileProvision
+    update:
+      x-primary-key: UPRN
+      x-field-pattern: >-
+        Field names are the cross-product {EE|H3|TF|VO} x {Voice|Data} x
+        {Outdoor|Indoor} with an optional No4g suffix — 32 coverage fields in total.
+        The No4g variants report coverage excluding 4G, for devices or use cases
+        that cannot use it.

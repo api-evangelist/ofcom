@@ -1,0 +1,53 @@
+generated: '2026-07-25'
+method: searched
+source: npm registry search, PyPI, GitHub, CRAN
+description: |
+  Ofcom publishes no first-party client library for the Connected Nations
+  Broadband and Mobile APIs on any public package registry. Registry probes
+  returned nothing first-party: PyPI has no ofcom / ofcom-api / pyofcom package
+  (404 on all three), and the npm search for "ofcom" surfaces only third-party
+  work. Ofcom ships the OpenAPI documents and the Azure APIM developer portal and
+  stops there — the community fills the SDK gap, which is the usual signature of a
+  specification-first public-sector publisher.
+official_sdk_count: 0
+packages: []
+community_packages:
+  - language: javascript
+    registry: npm
+    name: "@stevegoossens/ofcom"
+    version: 1.0.1
+    url: https://www.npmjs.com/package/@stevegoossens/ofcom
+    repository: https://github.com/stevegoossens/ofcom
+    install: npm install @stevegoossens/ofcom
+    license: MIT
+    author: Steve Goossens
+    official: false
+    covers:
+      - Ofcom Connected Nations Broadband API
+      - Ofcom Connected Nations Mobile API
+    note: >-
+      Wraps GET /coverage/{PostCode} on both products as coverageByPostCode(),
+      authenticating with the Ocp-Apim-Subscription-Key header. Requires a
+      separate approved subscription key per product.
+  - language: r
+    registry: github
+    name: tapioca
+    url: https://github.com/francisbarton/tapioca
+    repository: https://github.com/francisbarton/tapioca
+    install: remotes::install_github("francisbarton/tapioca")
+    author: Francis Barton
+    official: false
+    covers:
+      - Ofcom Connected Nations Mobile API
+    note: R wrapper — "Tap into the Ofcom (Mobile) API". Not on CRAN.
+registries_probed:
+  - {registry: npm, query: ofcom, first_party_hits: 0}
+  - {registry: pypi, names: [ofcom, ofcom-api, pyofcom], status: 404}
+  - {registry: cran, name: tapioca, status: 303, note: not a CRAN package}
+  - {registry: github, query: "ofcom in:name", first_party_hits: 0}
+notes:
+  - >-
+    GitHub organisation github.com/OFCOM exists (created 2016-09-07) but is
+    unverified, has 0 public repositories, no description and no linked website —
+    it is not a usable first-party source and no GitHubOrganization pointer is
+    wired from it.

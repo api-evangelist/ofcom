@@ -1,0 +1,58 @@
+generated: '2026-07-25'
+method: searched
+source: https://api.ofcom.org.uk/apis, https://api.ofcom.org.uk/mapi/apis?api-version=2021-08-01, openapi/
+description: |
+  Ofcom publishes no versioning policy, no deprecation policy, no SLA and no status
+  page for its APIs. What version signal exists comes from the platform, not from a
+  published policy: both APIs report Azure API Management apiRevision "1" and
+  info.version "1.0", and neither base path carries a version segment
+  (/broadband, /mobile). Consumers have no announced contract for breaking change.
+versioning:
+  scheme: none-in-path
+  current: '1.0'
+  api_revision: '1'
+  docs: null
+  evidence:
+    - source: https://api.ofcom.org.uk/mapi/apis?api-version=2021-08-01
+      finding: 'apiRevision: "1", isCurrent: true for both APIs'
+    - source: openapi/ofcom-connected-nations-broadband-api-openapi.yml
+      finding: 'info.version: "1.0"; servers[0].url has no version segment'
+  note: >-
+    Azure APIM supports versions and revisions natively; Ofcom uses a single
+    revision and no version set, so there is no side-by-side version surface.
+deprecation:
+  policy_url: null
+  policy_published: false
+  sunset_header: false
+  deprecation_header: false
+  deprecated_operations: []
+  note: >-
+    No RFC 8594 Sunset or Deprecation header is documented, and no operation in
+    either spec carries deprecated: true.
+sla:
+  url: null
+  uptime_target: null
+  published: false
+status_page: null
+status_page_probes:
+  - {url: 'https://status.ofcom.org.uk', status: '000', note: DNS does not resolve}
+  - {url: 'https://ofcom.statuspage.io', status: 200, note: redirects to atlassian.com/software/statuspage — unclaimed, not an Ofcom status page}
+  - {url: 'https://api.ofcom.org.uk/status', status: 404}
+changelog:
+  url: null
+  published: false
+  note: >-
+    No dated API changelog or release-notes page was found on the developer portal
+    or via search. The underlying Connected Nations dataset is refreshed on Ofcom's
+    own reporting cycle and the API silently serves the current dataset.
+terms:
+  url: https://www.ofcom.org.uk/siteassets/ofcom/phones-telecoms-and-internet/advice-for-consumers-/broadband-and-mobile-coverage-checker/ofcom-api-terms-of-use-2025.pdf?v=399736
+  title: Ofcom API terms of use 2025
+  format: pdf
+  note: >-
+    Search-indexed and dated 2025, which is the only annual-cadence document tied to
+    the API. Direct automated fetch returns 403 behind the Cloudflare bot challenge
+    that fronts www.ofcom.org.uk, so its body could not be captured.
+support:
+  email: cnapisupport@ofcom.org.uk
+  note: Connected Nations API support address; also the registration route for API access.

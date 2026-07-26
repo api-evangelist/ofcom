@@ -1,0 +1,64 @@
+generated: '2026-07-25'
+method: searched
+source: openapi/ofcom-connected-nations-broadband-api-openapi.yml, openapi/ofcom-connected-nations-mobile-api-openapi.yml
+docs: https://api.ofcom.org.uk/
+evidence:
+- source: https://api.ofcom.org.uk/mapi/apis?api-version=2021-08-01
+  status: 200
+  finding: >-
+    Both APIs report subscriptionRequired=true, authenticationSettings.oAuth2=null,
+    authenticationSettings.openid=null and
+    subscriptionKeyParameterNames={header: Ocp-Apim-Subscription-Key,
+    query: subscription-key, bearer: null}. Confirms API-key-only, anonymously.
+- source: https://api.ofcom.org.uk/mapi/products?api-version=2021-08-01
+  status: 200
+  finding: All four products carry subscriptionRequired=true and approvalRequired=true.
+- source: https://api-proxy.ofcom.org.uk/broadband/coverage/SW1A1AA
+  status: 401
+  finding: 'Anonymous call returns "Access denied due to missing subscription key."'
+description: |
+  Azure API Management subscription key, and nothing else. There is no OAuth, no
+  OpenID Connect, no mTLS and no bearer-token option anywhere in Ofcom's surface —
+  /.well-known/openid-configuration and /.well-known/oauth-authorization-server both
+  return 404 on every Ofcom host. Keys are scoped to a PRODUCT, not to the provider:
+  a Broadband key does not call the Mobile API. Issuance is self-serve to request but
+  human-approved to grant.
+issuance:
+  sign_up: https://api.ofcom.org.uk/signup
+  sign_in: https://api.ofcom.org.uk/signin
+  self_serve: true
+  approval_required: true
+  approval_note: >-
+    All four products are approvalRequired=true — an Ofcom person approves the
+    subscription before a key is issued. Discovery, documentation and OpenAPI
+    download are anonymous; only key issuance is gated.
+  key_scope: per product (broadband, broadband-premium, mobile, mobile-premium)
+  support: cnapisupport@ofcom.org.uk
+oauth: false
+oidc: false
+mtls: false
+scopes: false
+scopes_note: >-
+  No OAuth scope surface exists — this is a key-auth API, so scopes/ is
+  deliberately absent rather than empty.
+summary:
+  types:
+  - apiKey
+  api_key_in:
+  - header
+  - query
+schemes:
+- name: apiKeyHeader
+  type: apiKey
+  in: header
+  parameter: Ocp-Apim-Subscription-Key
+  sources:
+  - openapi/ofcom-connected-nations-broadband-api-openapi.yml
+  - openapi/ofcom-connected-nations-mobile-api-openapi.yml
+- name: apiKeyQuery
+  type: apiKey
+  in: query
+  parameter: subscription-key
+  sources:
+  - openapi/ofcom-connected-nations-broadband-api-openapi.yml
+  - openapi/ofcom-connected-nations-mobile-api-openapi.yml

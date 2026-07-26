@@ -1,0 +1,61 @@
+generated: '2026-07-25'
+method: derived
+source: mcp/ofcom-mcp.yml, openapi/ofcom-connected-nations-broadband-api-openapi.yml, openapi/ofcom-connected-nations-mobile-api-openapi.yml
+description: |
+  Binding between the derived MCP candidate tools and the REST operations that back
+  them. Ofcom's surface is unusually simple: two REST operations, no GraphQL, no
+  published MCP server, and therefore no divergence — every candidate tool maps
+  1:1 onto a real published operation, and no operation is left without a tool.
+  Recorded so the crosswalk exists the day Ofcom (or a third party) turns an MCP
+  server on over these specs.
+surfaces:
+  openapi:
+    - file: openapi/ofcom-connected-nations-broadband-api-openapi.yml
+      server: https://api-proxy.ofcom.org.uk/broadband
+      operations: 1
+      gated: true
+      gate: Azure APIM subscription key (Ocp-Apim-Subscription-Key); live probe returns 401 anonymously
+    - file: openapi/ofcom-connected-nations-mobile-api-openapi.yml
+      server: https://api-proxy.ofcom.org.uk/mobile
+      operations: 1
+      gated: true
+      gate: Azure APIM subscription key (Ocp-Apim-Subscription-Key); live probe returns 401 anonymously
+  graphql:
+    endpoint: null
+    note: No GraphQL surface. Confirmed in review.yml.
+  mcp:
+    url: null
+    status: none-published
+    note: >-
+      Azure APIM reports mcpProperties=null and isAgent=false for both APIs, so no
+      tools/list endpoint exists to introspect. Tools below are derived from the
+      OpenAPI, not harvested from a live server.
+crosswalk:
+  - tool: get_broadband_coverage_by_postcode
+    category: coverage
+    rest: [CoverageByPostCodeGet]
+    rest_source: openapi/ofcom-connected-nations-broadband-api-openapi.yml
+    binding: rest
+    confidence: high
+    note: >-
+      One-to-one. The tool inherits its real inputSchema from the operation's single
+      required path parameter PostCode (string) and returns FixedAvailability.
+  - tool: get_mobile_coverage_by_postcode
+    category: coverage
+    rest: [CoverageByPostCodeGet]
+    rest_source: openapi/ofcom-connected-nations-mobile-api-openapi.yml
+    binding: rest
+    confidence: high
+    note: >-
+      One-to-one. Inherits the same PostCode path parameter and returns
+      MobileAvailabilityArray. Shares the operationId string with the broadband
+      operation — disambiguate by source spec / server URL.
+mcp_only: []
+rest_only: []
+coverage:
+  tools_named: 2
+  tools_bound: 2
+  mcp_only: 0
+  rest_operations_total: 2
+  rest_operations_with_tool: 2
+  graphql_fields: 0

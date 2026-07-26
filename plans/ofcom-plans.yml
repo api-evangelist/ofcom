@@ -1,0 +1,88 @@
+specification: API Commons Plans
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
+provider: Ofcom
+providerId: ofcom
+generated: '2026-07-25'
+method: searched
+created: '2026-07-25'
+modified: '2026-07-25'
+tags:
+  - Telecommunications
+  - United Kingdom
+  - Open Data
+  - Broadband
+  - Mobile Network Coverage
+description: >-
+  Ofcom publishes four Azure API Management products — a Basic and a Premium tier
+  over each of the two Connected Nations APIs. No price is published for any of
+  them; Ofcom is a regulator publishing public-interest data, and the tiers gate
+  volume, not money. Every product is subscriptionRequired and approvalRequired:
+  sign-up is open and self-serve, but an Ofcom human approves the subscription
+  before a key is issued.
+sources:
+  - https://api.ofcom.org.uk/products
+  - https://api.ofcom.org.uk/mapi/products?api-version=2021-08-01
+plans:
+  - id: broadband
+    name: Broadband Coverage (Basic)
+    api: ofcom:ofcom-connected-nations-broadband-api
+    type: free
+    price: null
+    state: published
+    subscriptionRequired: true
+    approvalRequired: true
+    description: >-
+      Subscribers can retrieve broadband coverage data against postcodes up to run
+      100 calls/minute for 50,000 requests per month.
+    entries:
+      - {label: Call rate, name: calls_per_minute, type: limit, metric: requests, limit: 100, timeFrame: minute}
+      - {label: Monthly quota, name: requests_per_month, type: limit, metric: requests, limit: 50000, timeFrame: month}
+  - id: broadband-premium
+    name: Broadband Coverage (Premium)
+    api: ofcom:ofcom-connected-nations-broadband-api
+    type: free
+    price: null
+    state: published
+    subscriptionRequired: true
+    approvalRequired: true
+    description: >-
+      Subscribers can retrieve broadband coverage data against postcodes up to run
+      500 calls/minute for 150,000 requests per month.
+    entries:
+      - {label: Call rate, name: calls_per_minute, type: limit, metric: requests, limit: 500, timeFrame: minute}
+      - {label: Monthly quota, name: requests_per_month, type: limit, metric: requests, limit: 150000, timeFrame: month}
+  - id: mobile
+    name: Mobile Coverage (Basic)
+    api: ofcom:ofcom-connected-nations-mobile-api
+    type: free
+    price: null
+    state: published
+    subscriptionRequired: true
+    approvalRequired: true
+    description: >-
+      Subscribers can retrieve mobile coverage data against postcodes up to run 100
+      calls/minute for 50,000 requests per month.
+    entries:
+      - {label: Call rate, name: calls_per_minute, type: limit, metric: requests, limit: 100, timeFrame: minute}
+      - {label: Monthly quota, name: requests_per_month, type: limit, metric: requests, limit: 50000, timeFrame: month}
+  - id: mobile-premium
+    name: Mobile Coverage (Premium)
+    api: ofcom:ofcom-connected-nations-mobile-api
+    type: free
+    price: null
+    state: published
+    subscriptionRequired: true
+    approvalRequired: true
+    description: >-
+      Subscribers can retrieve broadband coverage data against postcodes up to run
+      500 calls/minute for 150,000 requests per month.
+    entries:
+      - {label: Call rate, name: calls_per_minute, type: limit, metric: requests, limit: 500, timeFrame: minute}
+      - {label: Monthly quota, name: requests_per_month, type: limit, metric: requests, limit: 150000, timeFrame: month}
+notes:
+  - No pricing is published for any product; terms are null on all four.
+  - >-
+    The Mobile Coverage (Premium) description text says "broadband coverage data" —
+    recorded verbatim; it appears to be an error in Ofcom's own product catalog.
+  - Terms of use are a separate PDF, see lifecycle/ofcom-lifecycle.yml.

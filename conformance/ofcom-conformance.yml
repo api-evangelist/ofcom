@@ -1,0 +1,68 @@
+generated: '2026-07-25'
+method: derived
+source: openapi/ofcom-connected-nations-broadband-api-openapi.yml, openapi/ofcom-connected-nations-mobile-api-openapi.yml, review.yml
+description: |
+  Cross-cutting standards posture derived from the two harvested OpenAPI documents
+  and the live-probe evidence in review.yml. Ofcom publishes no compliance
+  certifications, no trust centre and no conformance claims of any kind for these
+  APIs — this file asserts only what the specs and probes support. Note that Ofcom
+  is a regulator: the standards it authors (UK spectrum and numbering rules) are
+  not standards its own API surface conforms to.
+standards:
+  - id: openapi-3.0
+    conforms: true
+    evidence: both documents declare openapi 3.0.1 and parse as valid OpenAPI
+  - id: apikey-auth
+    conforms: true
+    evidence: securitySchemes apiKeyHeader (Ocp-Apim-Subscription-Key, header) and apiKeyQuery (subscription-key, query), applied globally
+  - id: oauth2
+    conforms: false
+    evidence: no oauth2 securityScheme in either spec; /.well-known/oauth-authorization-server returns 404 on both hosts
+  - id: oidc
+    conforms: false
+    evidence: /.well-known/openid-configuration returns 404 on api.ofcom.org.uk and api-proxy.ofcom.org.uk
+  - id: rfc9457-problem-details
+    conforms: false
+    evidence: 404 and 500 responses return application/json with a bespoke {ErrorMessage} envelope, not application/problem+json
+  - id: rfc9116-security-txt
+    conforms: false
+    evidence: /.well-known/security.txt returns 404 on every reachable host
+  - id: rfc9727-api-catalog
+    conforms: false
+    evidence: /.well-known/api-catalog returns 404 on every reachable host
+  - id: rfc8594-sunset-header
+    conforms: false
+    evidence: no Sunset or Deprecation header documented; no deprecation policy published
+  - id: idempotency-key
+    conforms: false
+    evidence: surface is read-only (GET only); no idempotency key header defined or needed
+  - id: pagination
+    conforms: false
+    evidence: neither operation defines pagination parameters; a postcode returns its full premises array
+  - id: asyncapi
+    conforms: false
+    evidence: no event, streaming or webhook surface
+  - id: json-api
+    conforms: false
+    evidence: responses are plain application/json objects/arrays, not JSON:API documents
+  - id: camara
+    conforms: false
+    evidence: >-
+      Ofcom appears once in camaraproject/Governance/PARTICIPANTS.MD as a named
+      standards participant, but exposes no CAMARA network API — it operates no
+      network. Participation in the process is not an implementation.
+  - id: gsma-open-gateway
+    conforms: false
+    evidence: Open Gateway is an operator commitment programme; Ofcom is the regulator, not an operator
+  - id: tmforum-open-api
+    conforms: false
+    evidence: no TM Forum Open API conformance certification found
+  - id: 3gpp-nef-scef
+    conforms: false
+    evidence: Ofcom operates no network and exposes no NEF/SCEF/slicing/MEC surface
+certifications_published: []
+compliance_program_published: false
+note: >-
+  No Compliance pointer is wired from this file — Ofcom publishes no SOC 2, ISO
+  27001, PCI DSS, HIPAA, FedRAMP or equivalent attestation for its API surface, and
+  this is a derived conformance assertion, not a published compliance programme.

@@ -1,0 +1,44 @@
+generated: '2026-07-25'
+method: searched
+source: live probes of every apis.yml and OpenAPI servers[] host
+description: |
+  Ofcom publishes no /.well-known/ discovery surface. Every RFC 9116 security.txt,
+  OIDC/OAuth discovery document, RFC 9727 api-catalog and ai-plugin.json probe
+  returned 404 on both the developer-portal host (api.ofcom.org.uk) and the live
+  Azure APIM gateway (api-proxy.ofcom.org.uk). The main website
+  (www.ofcom.org.uk) sits behind a Cloudflare bot challenge and answered 403 to
+  every automated request including a browser user-agent, so its /.well-known/
+  surface could not be confirmed either way — 403 is recorded as inconclusive,
+  not as absence.
+hosts:
+  - host: https://api.ofcom.org.uk
+    role: developer portal (Azure API Management)
+    documents:
+      - {path: /.well-known/security.txt, status: 404}
+      - {path: /.well-known/openid-configuration, status: 404}
+      - {path: /.well-known/oauth-authorization-server, status: 404}
+      - {path: /.well-known/oauth-protected-resource, status: 404}
+      - {path: /.well-known/api-catalog, status: 404}
+      - {path: /.well-known/ai-plugin.json, status: 404}
+  - host: https://api-proxy.ofcom.org.uk
+    role: live API gateway
+    documents:
+      - {path: /.well-known/security.txt, status: 404}
+      - {path: /.well-known/openid-configuration, status: 404}
+      - {path: /.well-known/oauth-authorization-server, status: 404}
+      - {path: /.well-known/oauth-protected-resource, status: 404}
+      - {path: /.well-known/api-catalog, status: 404}
+      - {path: /.well-known/ai-plugin.json, status: 404}
+  - host: https://checker.ofcom.org.uk
+    role: consumer coverage checker
+    documents:
+      - {path: /.well-known/security.txt, status: 404}
+  - host: https://www.ofcom.org.uk
+    role: main website
+    inconclusive: true
+    documents:
+      - {path: /.well-known/security.txt, status: 403, note: Cloudflare bot challenge, not a confirmed absence}
+security_txt: false
+openid_configuration: false
+oauth_authorization_server: false
+api_catalog: false

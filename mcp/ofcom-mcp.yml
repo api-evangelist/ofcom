@@ -1,0 +1,58 @@
+generated: '2026-07-25'
+method: derived
+status: candidate
+source: openapi/ofcom-connected-nations-broadband-api-openapi.yml, openapi/ofcom-connected-nations-mobile-api-openapi.yml
+description: |
+  Ofcom publishes no MCP server. This is a DERIVED candidate tool surface — what an
+  MCP server over Ofcom's two published operations would expose — not an Ofcom
+  product. Confirmed absence: the anonymous Azure APIM developer-portal management
+  endpoint https://api.ofcom.org.uk/mapi/apis?api-version=2021-08-01 returns both
+  APIs with "mcpProperties": null, "a2aProperties": null and "isAgent": false, which
+  is Azure API Management's own field set for MCP/agent exposure — Ofcom has not
+  turned it on. No mcp.ofcom.org.uk host exists and no Ofcom MCP server appears in
+  any public MCP registry.
+published_server: false
+evidence:
+  - source: https://api.ofcom.org.uk/mapi/apis?api-version=2021-08-01
+    status: 200
+    finding: 'both APIs report mcpProperties: null, a2aProperties: null, isAgent: false'
+server:
+  name: ofcom
+  transport: http
+  url: null
+  auth:
+    type: apiKey
+    header: Ocp-Apim-Subscription-Key
+    note: >-
+      Azure APIM subscription key, issued per product after Ofcom approval
+      (approvalRequired=true on all four products). An MCP server would need one
+      key per product it fronts.
+tools:
+  - name: get_broadband_coverage_by_postcode
+    description: >-
+      Return predicted fixed broadband availability for a UK postcode — per-premises
+      maximum predicted download/upload speeds by Basic, Superfast and Ultrafast
+      band, plus percentage availability of each speed category.
+    source_operation: openapi/ofcom-connected-nations-broadband-api-openapi.yml#CoverageByPostCodeGet
+    method: GET
+    path: /coverage/{PostCode}
+    server: https://api-proxy.ofcom.org.uk/broadband
+    input_schema_source: openapi/ofcom-connected-nations-broadband-api-openapi.yml#/paths/~1coverage~1{PostCode}/get/parameters
+    read_only: true
+  - name: get_mobile_coverage_by_postcode
+    description: >-
+      Return predicted mobile coverage for a UK postcode scored 0 (none), 3 (limited)
+      or 4 (likely) for EE, H3 (Three), TF (Virgin Media O2) and VO (Vodafone), split
+      by voice/data and indoor/outdoor, with separate no-4G variants.
+    source_operation: openapi/ofcom-connected-nations-mobile-api-openapi.yml#CoverageByPostCodeGet
+    method: GET
+    path: /coverage/{PostCode}
+    server: https://api-proxy.ofcom.org.uk/mobile
+    input_schema_source: openapi/ofcom-connected-nations-mobile-api-openapi.yml#/paths/~1coverage~1{PostCode}/get/parameters
+    read_only: true
+notes:
+  - >-
+    Both source specs use the same operationId (CoverageByPostCodeGet); they are
+    disambiguated only by the servers[] base URL (/broadband vs /mobile). Any MCP
+    or code generation over both specs must namespace by API, not by operationId.
+  - Every tool is read-only — Ofcom exposes no write operation.

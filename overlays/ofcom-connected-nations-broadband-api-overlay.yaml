@@ -1,0 +1,61 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for Ofcom Connected Nations Broadband API
+  version: 1.0.0
+extends: openapi/ofcom-connected-nations-broadband-api-openapi.yml
+x-apievangelist:
+  generated: '2026-07-25'
+  method: generated
+  source: openapi/ofcom-connected-nations-broadband-api-openapi.yml, review.yml, live probes
+  note: >-
+    Additive only. Captures what we verified about this API that Ofcom's exported
+    OpenAPI omits — the gateway 401, the -1 sentinel semantics, the read-only
+    agentic-access contract and the published rate limits. Never mutates the
+    harvested original.
+actions:
+  - target: $.info
+    update:
+      x-apievangelist-provider: ofcom
+      x-apievangelist-artifacts: https://github.com/api-evangelist/ofcom
+      contact:
+        name: Ofcom Connected Nations API support
+        email: cnapisupport@ofcom.org.uk
+      x-terms-of-use: https://www.ofcom.org.uk/siteassets/ofcom/phones-telecoms-and-internet/advice-for-consumers-/broadband-and-mobile-coverage-checker/ofcom-api-terms-of-use-2025.pdf?v=399736
+  - target: $.info
+    update:
+      x-rate-limits:
+        source: https://api.ofcom.org.uk/products
+        products:
+          - {name: Broadband Coverage (Basic), calls_per_minute: 100, requests_per_month: 50000, approval_required: true}
+          - {name: Broadband Coverage (Premium), calls_per_minute: 500, requests_per_month: 150000, approval_required: true}
+  - target: $.paths['/coverage/{PostCode}'].get
+    update:
+      tags:
+        - Coverage
+      x-agentic-access:
+        action-class: connected
+        consequence: read
+        subject: optional
+        token:
+          max-ttl: 3600
+        audit: none
+  - target: $.paths['/coverage/{PostCode}'].get.responses
+    update:
+      '401':
+        description: >-
+          Access denied due to missing or invalid subscription key. Emitted by the
+          Azure API Management gateway before the API is reached; confirmed by
+          anonymous live probe of
+          https://api-proxy.ofcom.org.uk/broadband/coverage/SW1A1AA on 2026-07-25.
+        content:
+          text/plain:
+            schema:
+              type: string
+  - target: $.components.schemas.BroadbandProvision
+    update:
+      x-notes: >-
+        Every predicted-speed field has a minimum of -1, which is the dataset
+        sentinel for "no prediction available" rather than a speed. Filter -1 before
+        aggregating. Values are Ofcom PREDICTED availability from the Connected
+        Nations dataset, not measured throughput.
+      x-primary-key: UPRN
