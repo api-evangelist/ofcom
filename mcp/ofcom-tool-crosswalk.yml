@@ -25,7 +25,8 @@ surfaces:
     note: No GraphQL surface. Confirmed in review.yml.
   mcp:
     url: null
-    status: none-published
+    status: none
+    status_raw: none-published
     note: >-
       Azure APIM reports mcpProperties=null and isAgent=false for both APIs, so no
       tools/list endpoint exists to introspect. Tools below are derived from the
