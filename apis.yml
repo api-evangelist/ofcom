@@ -104,6 +104,8 @@ apis:
   - type: Console
     url: https://api.ofcom.org.uk/api-details
 common:
+- type: MCPServer
+  url: mcp/ofcom-mcp.yml
 - type: AgenticAccess
   url: agentic-access/ofcom-agentic-access.yml
 - type: ToolCrosswalk
