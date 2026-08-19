@@ -1,0 +1,238 @@
+{
+  "item": [
+    {
+      "id": "535f866f-b79f-452b-9276-12ef05f3660f",
+      "name": "Get broadband provision by postcode",
+      "request": {
+        "name": "Get broadband provision by postcode",
+        "description": {
+          "content": "This endpoint will return predicted broadband speeds broken down by up/down and by Basic/Superfast/Ultrafast alongside percentage availability of the broadband speed categories.",
+          "type": "text/plain"
+        },
+        "url": {
+          "path": [
+            "coverage",
+            ":PostCode"
+          ],
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "query": [],
+          "variable": [
+            {
+              "disabled": false,
+              "type": "any",
+              "value": "<string>",
+              "key": "PostCode",
+              "description": "(Required) The postcode of interest"
+            }
+          ]
+        },
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "method": "GET",
+        "auth": null
+      },
+      "response": [
+        {
+          "id": "04bfd0a1-15b3-457a-86a4-3551551d2779",
+          "name": "Successful operation - broadband provision is returned",
+          "originalRequest": {
+            "url": {
+              "path": [
+                "coverage",
+                ":PostCode"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "PostCode",
+                  "description": "(Required) The postcode of interest"
+                }
+              ]
+            },
+            "header": [
+              {
+                "description": {
+                  "content": "Added as a part of security scheme: apikey",
+                  "type": "text/plain"
+                },
+                "key": "Ocp-Apim-Subscription-Key",
+                "value": "<API Key>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "body": {}
+          },
+          "status": "OK",
+          "code": 200,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": "{\n  \"PostCode\": \"string\",\n  \"Availability\": [\n    {\n      \"UPRN\": 0,\n      \"AddressShortDescription\": \"string\",\n      \"PostCode\": \"string\",\n      \"MaxBbPredictedDown\": 0,\n      \"MaxBbPredictedUp\": 0,\n      \"MaxSfbbPredictedDown\": 0,\n      \"MaxSfbbPredictedUp\": 0,\n      \"MaxUfbbPredictedDown\": 0,\n      \"MaxUfbbPredictedUp\": 0,\n      \"MaxPredictedDown\": 0,\n      \"MaxPredictedUp\": 0\n    }\n  ]\n}",
+          "cookie": [],
+          "_postman_previewlanguage": "json"
+        },
+        {
+          "id": "28178d0f-327a-49c5-ab23-1bd28e730f4c",
+          "name": "Post Code not found",
+          "originalRequest": {
+            "url": {
+              "path": [
+                "coverage",
+                ":PostCode"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "PostCode",
+                  "description": "(Required) The postcode of interest"
+                }
+              ]
+            },
+            "header": [
+              {
+                "description": {
+                  "content": "Added as a part of security scheme: apikey",
+                  "type": "text/plain"
+                },
+                "key": "Ocp-Apim-Subscription-Key",
+                "value": "<API Key>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "body": {}
+          },
+          "status": "Not Found",
+          "code": 404,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": "{\n  \"PostCode\": \"string\",\n  \"ErrorMessage\": \"string\"\n}",
+          "cookie": [],
+          "_postman_previewlanguage": "json"
+        },
+        {
+          "id": "878cf6ad-eed6-47fd-a03b-fdce1a717dfd",
+          "name": "General error",
+          "originalRequest": {
+            "url": {
+              "path": [
+                "coverage",
+                ":PostCode"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "PostCode",
+                  "description": "(Required) The postcode of interest"
+                }
+              ]
+            },
+            "header": [
+              {
+                "description": {
+                  "content": "Added as a part of security scheme: apikey",
+                  "type": "text/plain"
+                },
+                "key": "Ocp-Apim-Subscription-Key",
+                "value": "<API Key>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "body": {}
+          },
+          "status": "Internal Server Error",
+          "code": 500,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": "{\n  \"ErrorMessage\": \"string\"\n}",
+          "cookie": [],
+          "_postman_previewlanguage": "json"
+        }
+      ],
+      "event": [],
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      }
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api-proxy.ofcom.org.uk/broadband",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "Ocp-Apim-Subscription-Key"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "header"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "f3ecd7d4-0d5c-4367-a6be-ee3d65adfe32",
+    "name": "Ofcom Connected Nations Broadband API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "An API based on Connected Nations broadband data.",
+      "type": "text/plain"
+    }
+  }
+}

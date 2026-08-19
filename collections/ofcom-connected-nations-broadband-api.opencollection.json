@@ -1,0 +1,37 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Ofcom Connected Nations Broadband API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "Ocp-Apim-Subscription-Key",
+      "value": "{{Ocp-Apim-Subscription-Key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Get broadband provision by postcode",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://api-proxy.ofcom.org.uk/broadband/coverage/:PostCode",
+        "params": [
+          {
+            "name": "PostCode",
+            "value": "",
+            "type": "path",
+            "description": "The postcode of interest"
+          }
+        ]
+      },
+      "docs": "This endpoint will return predicted broadband speeds broken down by up/down and by Basic/Superfast/Ultrafast alongside percentage availability of the broadband speed categories."
+    }
+  ],
+  "bundled": true
+}

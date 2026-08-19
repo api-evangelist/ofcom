@@ -1,0 +1,37 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Ofcom Connected Nations Mobile API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "Ocp-Apim-Subscription-Key",
+      "value": "{{Ocp-Apim-Subscription-Key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Get mobile provision by postcode",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://api-proxy.ofcom.org.uk/mobile/coverage/:PostCode",
+        "params": [
+          {
+            "name": "PostCode",
+            "value": "",
+            "type": "path",
+            "description": "The postcode of interest"
+          }
+        ]
+      },
+      "docs": "<p>This endpoint will return 0/3/4 ratings for EE/H3/TF/VO mobile providers broken down by Voice/Data and Indoor/Outdoor</p>"
+    }
+  ],
+  "bundled": true
+}

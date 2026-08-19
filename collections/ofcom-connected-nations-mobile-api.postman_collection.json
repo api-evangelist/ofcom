@@ -1,0 +1,238 @@
+{
+  "item": [
+    {
+      "id": "a52dbe92-21d7-453d-a5e7-c549a0ddf09d",
+      "name": "Get mobile provision by postcode",
+      "request": {
+        "name": "Get mobile provision by postcode",
+        "description": {
+          "content": "<p>This endpoint will return 0/3/4 ratings for EE/H3/TF/VO mobile providers broken down by Voice/Data and Indoor/Outdoor</p>",
+          "type": "text/plain"
+        },
+        "url": {
+          "path": [
+            "coverage",
+            ":PostCode"
+          ],
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "query": [],
+          "variable": [
+            {
+              "disabled": false,
+              "type": "any",
+              "value": "<string>",
+              "key": "PostCode",
+              "description": "(Required) The postcode of interest"
+            }
+          ]
+        },
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/json"
+          }
+        ],
+        "method": "GET",
+        "auth": null
+      },
+      "response": [
+        {
+          "id": "6ce711d2-353d-45a3-ba4c-55da1b264a3c",
+          "name": "<p>Successful operation - mobile provision is returned</p>\r\n<p>The return values represent the following: </p>\r\n    <ul>\r\n        <li> 0 = None (you should not expect coverage) </li>\r\n        <li> 3 = Limited (coverage may be limited)</li>\r\n        <li> 4 = Likely (you are likely to have coverage)</li>\r\n    </ul>\r\n<p> Note that return values 1 and 2 are no longer used.</p>",
+          "originalRequest": {
+            "url": {
+              "path": [
+                "coverage",
+                ":PostCode"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "PostCode",
+                  "description": "(Required) The postcode of interest"
+                }
+              ]
+            },
+            "header": [
+              {
+                "description": {
+                  "content": "Added as a part of security scheme: apikey",
+                  "type": "text/plain"
+                },
+                "key": "Ocp-Apim-Subscription-Key",
+                "value": "<API Key>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "body": {}
+          },
+          "status": "OK",
+          "code": 200,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": "[\n  {\n    \"PostCode\": \"string\",\n    \"Availability\": [\n      {\n        \"UPRN\": 0,\n        \"AddressShortDescription\": \"string\",\n        \"PostCode\": \"string\",\n        \"EEVoiceOutdoor\": 1,\n        \"EEVoiceOutdoorNo4g\": 1,\n        \"EEVoiceIndoor\": 1,\n        \"EEVoiceIndoorNo4g\": 1,\n        \"EEDataOutdoor\": 1,\n        \"EEDataOutdoorNo4g\": 1,\n        \"EEDataIndoor\": 1,\n        \"EEDataIndoorNo4g\": 1,\n        \"H3VoiceOutdoor\": 1,\n        \"H3VoiceOutdoorNo4g\": 1,\n        \"H3VoiceIndoor\": 1,\n        \"H3VoiceIndoorNo4g\": 1,\n        \"H3DataOutdoor\": 1,\n        \"H3DataOutdoorNo4g\": 1,\n        \"H3DataIndoor\": 1,\n        \"H3DataIndoorNo4g\": 1,\n        \"TFVoiceOutdoor\": 1,\n        \"TFVoiceOutdoorNo4g\": 1,\n        \"TFVoiceIndoor\": 1,\n        \"TFVoiceIndoorNo4g\": 1,\n        \"TFDataOutdoor\": 1,\n        \"TFDataOutdoorNo4g\": 1,\n        \"TFDataIndoor\": 1,\n        \"TFDataIndoorNo4g\": 1,\n        \"VOVoiceOutdoor\": 1,\n        \"VOVoiceOutdoorNo4g\": 1,\n        \"VOVoiceIndoor\": 1,\n        \"VOVoiceIndoorNo4g\": 1,\n        \"VODataOutdoor\": 1,\n        \"VODataOutdoorNo4g\": 1,\n        \"VODataIndoor\": 1,\n        \"VODataIndoorNo4g\": 1\n      }\n    ]\n  }\n]",
+          "cookie": [],
+          "_postman_previewlanguage": "json"
+        },
+        {
+          "id": "18dddd60-2f6f-4562-aaef-1aa15fe38bf1",
+          "name": "Post Code not found",
+          "originalRequest": {
+            "url": {
+              "path": [
+                "coverage",
+                ":PostCode"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "PostCode",
+                  "description": "(Required) The postcode of interest"
+                }
+              ]
+            },
+            "header": [
+              {
+                "description": {
+                  "content": "Added as a part of security scheme: apikey",
+                  "type": "text/plain"
+                },
+                "key": "Ocp-Apim-Subscription-Key",
+                "value": "<API Key>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "body": {}
+          },
+          "status": "Not Found",
+          "code": 404,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": "{\n  \"PostCode\": \"string\",\n  \"ErrorMessage\": \"string\"\n}",
+          "cookie": [],
+          "_postman_previewlanguage": "json"
+        },
+        {
+          "id": "38db50b9-af4c-43c5-90b2-859c2272edab",
+          "name": "General error",
+          "originalRequest": {
+            "url": {
+              "path": [
+                "coverage",
+                ":PostCode"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "PostCode",
+                  "description": "(Required) The postcode of interest"
+                }
+              ]
+            },
+            "header": [
+              {
+                "description": {
+                  "content": "Added as a part of security scheme: apikey",
+                  "type": "text/plain"
+                },
+                "key": "Ocp-Apim-Subscription-Key",
+                "value": "<API Key>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "body": {}
+          },
+          "status": "Internal Server Error",
+          "code": 500,
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": "{\n  \"ErrorMessage\": \"string\"\n}",
+          "cookie": [],
+          "_postman_previewlanguage": "json"
+        }
+      ],
+      "event": [],
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      }
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api-proxy.ofcom.org.uk/mobile",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "Ocp-Apim-Subscription-Key"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "header"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "d9383b93-0f65-4d17-8025-1d7fe4d40322",
+    "name": "Ofcom Connected Nations Mobile API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "An API based on Connected Nations Mobile data.",
+      "type": "text/plain"
+    }
+  }
+}
