@@ -42,7 +42,7 @@ enrichment:
     OAuthScopes or WellKnown pointer is wired because Ofcom genuinely publishes
     none of those — see mcp/, lifecycle/, conventions/, well-known/, packages/ and
     conformance/ for the recorded negative results and probe statuses.
-specificationVersion: '0.19'
+specificationVersion: '0.23'
 apis:
 - aid: ofcom:ofcom-connected-nations-broadband-api
   name: Ofcom Connected Nations Broadband API
