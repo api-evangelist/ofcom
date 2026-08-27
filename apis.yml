@@ -44,59 +44,16 @@ enrichment:
     conformance/ for the recorded negative results and probe statuses.
 specificationVersion: '0.23'
 apis:
-- aid: ofcom:ofcom-connected-nations-broadband-api
-  name: Ofcom Connected Nations Broadband API
-  description: Returns predicted fixed broadband availability for a UK postcode from
-    Ofcom's Connected Nations dataset — per-premises maximum predicted download and
-    upload speeds broken out by Basic, Superfast, and Ultrafast bands, plus percentage
-    availability of each speed category. A single GET operation, GET /coverage/{PostCode},
-    authenticated with an Azure API Management subscription key sent as the
-    Ocp-Apim-Subscription-Key header or a subscription-key query parameter.
+- aid: ofcom:ofcom-coverage-api
+  name: Ofcom Coverage API
+  description: The Coverage API from Ofcom — 1 operation(s) for coverage.
   humanURL: https://api.ofcom.org.uk/apis
   baseURL: https://api-proxy.ofcom.org.uk/broadband
   tags:
-  - Broadband
   - Coverage
-  - United Kingdom
-  - Open Data
-  - Connected Nations
   properties:
   - type: OpenAPI
-    url: openapi/ofcom-connected-nations-broadband-api-openapi.yml
-  - type: Overlay
-    url: overlays/ofcom-connected-nations-broadband-api-overlay.yaml
-  - type: AgentSkill
-    url: skills/ofcom-check-broadband-coverage.md
-  - type: Documentation
-    url: https://api.ofcom.org.uk/
-  - type: APIReference
-    url: https://api.ofcom.org.uk/api-details
-  - type: Console
-    url: https://api.ofcom.org.uk/api-details
-- aid: ofcom:ofcom-connected-nations-mobile-api
-  name: Ofcom Connected Nations Mobile API
-  description: Returns predicted mobile coverage for a UK postcode from Ofcom's
-    Connected Nations dataset, scored 0 (none), 3 (limited), or 4 (likely) for each
-    of the four UK mobile network operators — EE, H3 (Three), TF (Virgin Media O2),
-    and VO (Vodafone) — split by voice and data and by indoor and outdoor, with
-    separate no-4G variants. A single GET operation, GET /coverage/{PostCode},
-    authenticated with an Azure API Management subscription key sent as the
-    Ocp-Apim-Subscription-Key header or a subscription-key query parameter.
-  humanURL: https://api.ofcom.org.uk/apis
-  baseURL: https://api-proxy.ofcom.org.uk/mobile
-  tags:
-  - Mobile Network Coverage
-  - Coverage
-  - United Kingdom
-  - Open Data
-  - Connected Nations
-  properties:
-  - type: OpenAPI
-    url: openapi/ofcom-connected-nations-mobile-api-openapi.yml
-  - type: Overlay
-    url: overlays/ofcom-connected-nations-mobile-api-overlay.yaml
-  - type: AgentSkill
-    url: skills/ofcom-check-mobile-coverage.md
+    url: openapi/ofcom-coverage-api-openapi.yml
   - type: Documentation
     url: https://api.ofcom.org.uk/
   - type: APIReference
@@ -104,6 +61,14 @@ apis:
   - type: Console
     url: https://api.ofcom.org.uk/api-details
 common:
+- type: Overlay
+  url: overlays/ofcom-connected-nations-broadband-api-overlay.yaml
+- type: AgentSkill
+  url: skills/ofcom-check-broadband-coverage.md
+- type: Overlay
+  url: overlays/ofcom-connected-nations-mobile-api-overlay.yaml
+- type: AgentSkill
+  url: skills/ofcom-check-mobile-coverage.md
 - type: MCPServer
   url: mcp/ofcom-mcp.yml
 - type: AgenticAccess
