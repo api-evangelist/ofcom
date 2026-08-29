@@ -10,62 +10,59 @@ info:
     this workflow is that job written down. Each API needs its own approved Azure
     APIM subscription key.
 sourceDescriptions:
-  - name: broadband
-    url: ../openapi/ofcom-connected-nations-broadband-api-openapi.yml
-    type: openapi
-  - name: mobile
-    url: ../openapi/ofcom-connected-nations-mobile-api-openapi.yml
-    type: openapi
+- name: coverageApi
+  url: ../openapi/ofcom-coverage-api-openapi.yml
+  type: openapi
 workflows:
-  - workflowId: postcode-connectivity-profile
-    summary: Fetch fixed and mobile coverage for a UK postcode and join on UPRN.
+- workflowId: postcode-connectivity-profile
+  summary: Fetch fixed and mobile coverage for a UK postcode and join on UPRN.
+  description: >-
+    Two independent read-only lookups against the same postcode. Both are safe to
+    retry; neither has a request body or any parameter other than the postcode.
+  inputs:
+    type: object
+    required:
+    - postCode
+    properties:
+      postCode:
+        type: string
+        description: >-
+          UK postcode, uppercase with whitespace removed, e.g. SW1A1AA. This is the
+          only input either API accepts.
+        example: SW1A1AA
+  steps:
+  - stepId: fixed-coverage
     description: >-
-      Two independent read-only lookups against the same postcode. Both are safe to
-      retry; neither has a request body or any parameter other than the postcode.
-    inputs:
-      type: object
-      required:
-        - postCode
-      properties:
-        postCode:
-          type: string
-          description: >-
-            UK postcode, uppercase with whitespace removed, e.g. SW1A1AA. This is the
-            only input either API accepts.
-          example: SW1A1AA
-    steps:
-      - stepId: fixed-coverage
-        description: >-
-          Predicted fixed broadband availability for every premises in the postcode.
-          Speed fields use -1 as the "no prediction available" sentinel.
-        operationId: $sourceDescriptions.broadband.CoverageByPostCodeGet
-        parameters:
-          - name: PostCode
-            in: path
-            value: $inputs.postCode
-        successCriteria:
-          - condition: $statusCode == 200
-        outputs:
-          fixedPostCode: $response.body#/PostCode
-          fixedAvailability: $response.body#/Availability
-      - stepId: mobile-coverage
-        description: >-
-          Predicted mobile coverage for the same postcode across EE, H3 (Three),
-          TF (Virgin Media O2) and VO (Vodafone). Note this API returns an ARRAY of
-          postcode envelopes, unlike the broadband API.
-        operationId: $sourceDescriptions.mobile.CoverageByPostCodeGet
-        parameters:
-          - name: PostCode
-            in: path
-            value: $inputs.postCode
-        successCriteria:
-          - condition: $statusCode == 200
-        outputs:
-          mobileAvailability: $response.body#/0/Availability
+      Predicted fixed broadband availability for every premises in the postcode.
+      Speed fields use -1 as the "no prediction available" sentinel.
+    operationId: $sourceDescriptions.coverageApi.CoverageByPostCodeGet
+    parameters:
+    - name: PostCode
+      in: path
+      value: $inputs.postCode
+    successCriteria:
+    - condition: $statusCode == 200
     outputs:
-      postCode: $inputs.postCode
-      fixedAvailability: $steps.fixed-coverage.outputs.fixedAvailability
-      mobileAvailability: $steps.mobile-coverage.outputs.mobileAvailability
+      fixedPostCode: $response.body#/PostCode
+      fixedAvailability: $response.body#/Availability
+  - stepId: mobile-coverage
+    description: >-
+      Predicted mobile coverage for the same postcode across EE, H3 (Three),
+      TF (Virgin Media O2) and VO (Vodafone). Note this API returns an ARRAY of
+      postcode envelopes, unlike the broadband API.
+    operationId: $sourceDescriptions.coverageApi.CoverageByPostCodeGet
+    parameters:
+    - name: PostCode
+      in: path
+      value: $inputs.postCode
+    successCriteria:
+    - condition: $statusCode == 200
+    outputs:
+      mobileAvailability: $response.body#/0/Availability
+  outputs:
+    postCode: $inputs.postCode
+    fixedAvailability: $steps.fixed-coverage.outputs.fixedAvailability
+    mobileAvailability: $steps.mobile-coverage.outputs.mobileAvailability
 x-apievangelist:
   generated: '2026-07-25'
   method: generated
