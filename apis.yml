@@ -21,6 +21,18 @@ description: Ofcom is the Office of Communications, the United Kingdom's indepen
   appears once in the CAMARA project participant register but exposes no CAMARA
   network APIs and is not a GSMA Open Gateway participant — Open Gateway is an
   operator commitment programme and Ofcom is the regulator, not an operator.
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: true
+  label: Hosted service · you call their endpoint
+  confidence: high
+  source:
+  - openapi
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
 tags:
 - Telecommunications
