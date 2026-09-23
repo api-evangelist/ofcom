@@ -1,0 +1,24 @@
+{
+  "provider": "ofcom",
+  "sources": [
+    "_original/ofcom-connected-nations-broadband-api-openapi.yml"
+  ],
+  "outputs": [
+    "ofcom-coverage-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [
+    "1 archived document(s) dropped as subsets of other archived documents",
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "ofcom-connected-nations-broadband-api-openapi.yml: upgraded openapi 3.0.1 -> OpenAPI 3.2.0",
+    "ofcom-connected-nations-broadband-api-openapi.yml: tagged paths GET /coverage/{PostCode} -> Coverage",
+    "ofcom-connected-nations-broadband-api-openapi.yml: declared missing tag: Coverage",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "_original/ofcom-connected-nations-mobile-api-openapi.yml: archived document superseded by a larger archived document",
+    "ofcom-coverage-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
+}
