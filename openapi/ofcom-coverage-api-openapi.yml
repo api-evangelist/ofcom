@@ -65,12 +65,17 @@ paths:
       - Coverage
 components:
   schemas:
-    GeneralError:
-      title: GeneralError
+    FixedAvailabilityNotFound:
+      title: FixedAvailabilityNotFound
       required:
+      - PostCode
       - ErrorMessage
       type: object
       properties:
+        PostCode:
+          maxLength: 7
+          type: string
+          description: Postcode of address, spaces removed
         ErrorMessage:
           type: string
           description: A human readable error message
@@ -125,17 +130,12 @@ components:
           minimum: -1
           type: number
           format: double
-    FixedAvailabilityNotFound:
-      title: FixedAvailabilityNotFound
+    GeneralError:
+      title: GeneralError
       required:
-      - PostCode
       - ErrorMessage
       type: object
       properties:
-        PostCode:
-          maxLength: 7
-          type: string
-          description: Postcode of address, spaces removed
         ErrorMessage:
           type: string
           description: A human readable error message
