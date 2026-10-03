@@ -65,17 +65,27 @@ paths:
       - Coverage
 components:
   schemas:
-    FixedAvailabilityNotFound:
-      title: FixedAvailabilityNotFound
+    FixedAvailability:
+      title: FixedAvailability
       required:
       - PostCode
-      - ErrorMessage
+      - Availability
       type: object
       properties:
         PostCode:
           maxLength: 7
           type: string
           description: Postcode of address, spaces removed
+        Availability:
+          type: array
+          items:
+            $ref: '#/components/schemas/BroadbandProvision'
+    GeneralError:
+      title: GeneralError
+      required:
+      - ErrorMessage
+      type: object
+      properties:
         ErrorMessage:
           type: string
           description: A human readable error message
@@ -130,30 +140,20 @@ components:
           minimum: -1
           type: number
           format: double
-    GeneralError:
-      title: GeneralError
-      required:
-      - ErrorMessage
-      type: object
-      properties:
-        ErrorMessage:
-          type: string
-          description: A human readable error message
-    FixedAvailability:
-      title: FixedAvailability
+    FixedAvailabilityNotFound:
+      title: FixedAvailabilityNotFound
       required:
       - PostCode
-      - Availability
+      - ErrorMessage
       type: object
       properties:
         PostCode:
           maxLength: 7
           type: string
           description: Postcode of address, spaces removed
-        Availability:
-          type: array
-          items:
-            $ref: '#/components/schemas/BroadbandProvision'
+        ErrorMessage:
+          type: string
+          description: A human readable error message
   securitySchemes:
     apiKeyHeader:
       type: apiKey
