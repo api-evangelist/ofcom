@@ -80,15 +80,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/BroadbandProvision'
-    GeneralError:
-      title: GeneralError
-      required:
-      - ErrorMessage
-      type: object
-      properties:
-        ErrorMessage:
-          type: string
-          description: A human readable error message
     BroadbandProvision:
       title: BroadbandProvision
       required:
@@ -140,6 +131,15 @@ components:
           minimum: -1
           type: number
           format: double
+    GeneralError:
+      title: GeneralError
+      required:
+      - ErrorMessage
+      type: object
+      properties:
+        ErrorMessage:
+          type: string
+          description: A human readable error message
     FixedAvailabilityNotFound:
       title: FixedAvailabilityNotFound
       required:
