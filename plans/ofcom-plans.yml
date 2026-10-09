@@ -86,3 +86,47 @@ notes:
     The Mobile Coverage (Premium) description text says "broadband coverage data" —
     recorded verbatim; it appears to be an error in Ofcom's own product catalog.
   - Terms of use are a separate PDF, see lifecycle/ofcom-lifecycle.yml.
+x-canonical:
+  generated: '2026-10-08'
+  vocabulary: all/0-working/economics/plans-canonical.yml
+  models:
+  - free
+  units:
+  - request
+  plans:
+  - name: Broadband Coverage (Basic)
+    access: free
+    model: free
+    model_how: derived
+    units:
+    - request
+    periods:
+    - minute
+    - month
+  - name: Broadband Coverage (Premium)
+    access: free
+    model: free
+    model_how: derived
+    units:
+    - request
+    periods:
+    - minute
+    - month
+  - name: Mobile Coverage (Basic)
+    access: free
+    model: free
+    model_how: derived
+    units:
+    - request
+    periods:
+    - minute
+    - month
+  - name: Mobile Coverage (Premium)
+    access: free
+    model: free
+    model_how: derived
+    units:
+    - request
+    periods:
+    - minute
+    - month
