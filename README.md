@@ -1,4 +1,4 @@
-# Ofcom (ofcom)
+# Ofcom
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -64,90 +64,134 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Ofcom is the Office of Communications, the United Kingdom's independent regulator and competition authority for telecommunications, spectrum, broadcasting, post, and online safety. It licenses UK spectrum, administers the national numbering plan, publishes the Connected Nations reports on fixed and mobile coverage, and supervises the operators (EE, VMO2, Vodafone, Three) rather than selling connectivity itself. Its position in the telecom value chain is upstream of the market it measures — a data producer and rule-setter, not a network or a CPaaS aggregator.
+Ofcom is the Office of Communications, the United Kingdom's independent regulator and competition authority for telecommunications, spectrum, broadcasting, post, and online safety. It licenses UK spectrum, administers the national numbering plan, publishes the Connected Nations reports on fixed and mobile coverage, and supervises the operators (EE, VMO2, Vodafone, Three) rather than selling connectivity itself. Its position in the telecom value chain is therefore upstream of the market it measures — it is a data producer and rule-setter, not a network or a CPaaS aggregator. Its API posture is unusually good for a regulator and unusually narrow in scope. Ofcom runs a real, Ofcom-branded Azure API Management developer portal at api.ofcom.org.uk with open sign-up, an interactive console, published rate-limit tiers, and anonymously downloadable OpenAPI 3.0.1 documents for two APIs — the Connected Nations Broadband API and the Connected Nations Mobile API — both served from the live gateway at api-proxy.ofcom.org.uk and authenticated with an Azure APIM subscription key. Everything else Ofcom publishes (spectrum licence registers, numbering data, market research) is documents and datasets, not APIs, and the community has repeatedly built third-party APIs on top of those files. Ofcom appears once in the CAMARA project participant register but exposes no CAMARA network APIs and is not a GSMA Open Gateway participant — Open Gateway is an operator commitment programme and Ofcom is the regulator, not an operator.
 
-Its API posture is unusually good for a regulator and unusually narrow in scope. Ofcom runs a real, Ofcom-branded Azure API Management developer portal at [api.ofcom.org.uk](https://api.ofcom.org.uk/) with open sign-up, an interactive console, published rate-limit tiers, and anonymously downloadable OpenAPI 3.0.1 documents for two APIs — the Connected Nations Broadband API and the Connected Nations Mobile API — both served from the live gateway at `api-proxy.ofcom.org.uk` and authenticated with an Azure APIM subscription key. Everything else Ofcom publishes (spectrum licence registers, numbering data, market research) is documents and datasets rather than APIs, and the community has repeatedly built third-party APIs on top of those files.
+**Areas:** Telecommunications · United Kingdom · Regulator · Broadband · Mobile Network Coverage · Spectrum · Open Data · Connected Nations
 
-Ofcom appears once in the CAMARA project participant register but exposes no CAMARA network APIs, and it is not a GSMA Open Gateway participant — Open Gateway is an operator commitment programme and Ofcom is the regulator, not an operator.
+## Ofcom on APIs.io
 
-**APIs.json:** [https://raw.githubusercontent.com/api-evangelist/ofcom/refs/heads/main/apis.yml](https://raw.githubusercontent.com/api-evangelist/ofcom/refs/heads/main/apis.yml)
+Everything profiled for Ofcom is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/ofcom/](https://apis.io/providers/ofcom/)** — or go straight to one of the APIs or properties below.
 
-## Tags
+### APIs (1)
 
-- Telecommunications
-- United Kingdom
-- Regulator
-- Broadband
-- Mobile Network Coverage
-- Spectrum
-- Open Data
-- Connected Nations
+- [Ofcom Coverage API](https://apis.io/apis/ofcom/ofcom-coverage-api/) — The Coverage API from Ofcom — 1 operation(s) for coverage.
 
-## Timestamps
+### Published properties
 
-- **Created:** 2026-07-25
-- **Modified:** 2026-07-25
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-## APIs
+#### Arazzo workflows (1)
 
-### Ofcom Connected Nations Broadband API
+Multi-step workflows that chain operations into a business task.
 
-Returns predicted fixed broadband availability for a UK postcode from Ofcom's Connected Nations dataset — per-premises maximum predicted download and upload speeds broken out by Basic, Superfast, and Ultrafast bands, plus percentage availability of each speed category. A single GET operation, `GET /coverage/{PostCode}`, authenticated with an Azure API Management subscription key sent as the `Ocp-Apim-Subscription-Key` header or a `subscription-key` query parameter.
+- [Ofcom postcode connectivity profile](https://apis.io/arazzos/ofcom/ofcom-postcode-connectivity-profile/)
 
-- **Human URL:** [https://api.ofcom.org.uk/apis](https://api.ofcom.org.uk/apis)
-- **Base URL:** `https://api-proxy.ofcom.org.uk/broadband`
+#### MCP servers (1)
 
-#### Tags
+Model Context Protocol servers that expose the API to agents.
 
-- Broadband
-- Coverage
-- United Kingdom
-- Open Data
-- Connected Nations
+- [ofcom](https://apis.io/servers/ofcom/ofcom/)
 
-#### Properties
+#### Agentic access (1)
 
-- [OpenAPI](openapi/ofcom-connected-nations-broadband-api-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Documentation](https://api.ofcom.org.uk/)
-- [API Reference](https://api.ofcom.org.uk/api-details)
+Which operations an agent can call, which act, and which need a human in the loop.
 
-### Ofcom Connected Nations Mobile API
+- [Ofcom Agentic Access](https://apis.io/agentic-access/ofcom/ofcom-agentic-access/)
 
-Returns predicted mobile coverage for a UK postcode from Ofcom's Connected Nations dataset, scored 0 (none), 3 (limited), or 4 (likely) for each of the four UK mobile network operators — EE, H3 (Three), TF (Virgin Media O2), and VO (Vodafone) — split by voice and data and by indoor and outdoor, with separate no-4G variants. A single GET operation, `GET /coverage/{PostCode}`, authenticated with an Azure API Management subscription key sent as the `Ocp-Apim-Subscription-Key` header or a `subscription-key` query parameter.
+#### Collections (2)
 
-- **Human URL:** [https://api.ofcom.org.uk/apis](https://api.ofcom.org.uk/apis)
-- **Base URL:** `https://api-proxy.ofcom.org.uk/mobile`
+Postman and Open Collection request collections.
 
-#### Tags
+- [Ofcom Connected Nations Broadband API](https://apis.io/collections/ofcom/open-ofcom-connected-nations-broadband-api/)
+- [Ofcom Connected Nations Mobile API](https://apis.io/collections/ofcom/open-ofcom-connected-nations-mobile-api/)
 
-- Mobile Network Coverage
-- Coverage
-- United Kingdom
-- Open Data
-- Connected Nations
+#### Overlays (2)
 
-#### Properties
+OpenAPI overlays, including conversational phrasing for each operation.
 
-- [OpenAPI](openapi/ofcom-connected-nations-mobile-api-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Documentation](https://api.ofcom.org.uk/)
-- [API Reference](https://api.ofcom.org.uk/api-details)
+- [Ofcom Connected Nations Broadband Api Overlay](https://apis.io/overlays/ofcom/ofcom-connected-nations-broadband-api-overlay/)
+- [Ofcom Connected Nations Mobile Api Overlay](https://apis.io/overlays/ofcom/ofcom-connected-nations-mobile-api-overlay/)
 
-## Plans
+#### Security (2)
 
-Rate limits are published in the product descriptions on the portal, which is unusually transparent for a public-sector API. All four products require Ofcom approval before a subscription key is issued.
+Authentication, trust centre, and vulnerability disclosure.
 
-| Product | Rate limit | Monthly quota |
-| --- | --- | --- |
-| Broadband Coverage (Basic) | 100 calls/minute | 50,000 requests |
-| Broadband Coverage (Premium) | 500 calls/minute | 150,000 requests |
-| Mobile Coverage (Basic) | 100 calls/minute | 50,000 requests |
-| Mobile Coverage (Premium) | 500 calls/minute | 150,000 requests |
+- [Ofcom Authentication](https://apis.io/security/ofcom/ofcom-authentication/)
+- [Ofcom Domain Security](https://apis.io/security/ofcom/ofcom-domain-security/)
 
-## Links
+#### Plans and pricing (1)
+
+Published plans, tiers and prices.
+
+- [Ofcom Plans](https://apis.io/plans/ofcom/ofcom-plans/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Ofcom Rate Limits](https://apis.io/rate-limits/ofcom/ofcom-rate-limits/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
 
 - [Website](https://www.ofcom.org.uk/)
-- [Developer Portal](https://api.ofcom.org.uk/)
-- [APIs](https://api.ofcom.org.uk/apis)
-- [Products / Plans](https://api.ofcom.org.uk/products)
-- [Sign Up](https://api.ofcom.org.uk/signup)
-- [Mobile and Broadband Checker](https://checker.ofcom.org.uk/)
+- [Documentation](https://api.ofcom.org.uk/apis)
+- [API reference](https://api.ofcom.org.uk/api-details)
+- [Sign up](https://api.ofcom.org.uk/signup)
+- [Terms of service](https://www.ofcom.org.uk/siteassets/ofcom/phones-telecoms-and-internet/advice-for-consumers-/broadband-and-mobile-coverage-checker/ofcom-api-terms-of-use-2025.pdf?v=399736)
+
+## API Evangelist rating
+
+**Kin Score 45.1** — developing · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
+|---|---|
+| Discoverability | 66.1 |
+| Contract quality | 48.4 |
+| Contract governance | 4.5 |
+| Operational transparency | 31.6 |
+| Developer ergonomics | 51.8 |
+| Access clarity | 55.3 |
+
+**Agent readiness 30.6** — agent-ready
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | na |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | na |
+| Error Semantics | derived (partial credit) |
+| OpenAPI Examples | verified |
+| Rate Limit Signal | documented (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | derived (partial credit) |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | na |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+| Pagination Ratio | na |
+| Operation Distinctiveness | na |
+
+**Regulatory alignment 22.5** — Telecommunications
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/ofcom/](https://apis.io/providers/ofcom/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Ofcom: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/ofcom/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
